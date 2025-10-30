@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль сотрудника - Медицинская система</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Боковая панель навигации -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>МедСистема</h2>
+                <p>Поликлиника №1</p>
+            </div>
+            <div class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i>📊</i> <span class="nav-text">Главная</span>
+                </a>
+                <a href="patients.html" class="nav-item">
+                    <i>👥</i> <span class="nav-text">Пациенты</span>
+                </a>
+                <a href="staff.html" class="nav-item">
+                    <i>👨‍⚕️</i> <span class="nav-text">Персонал</span>
+                </a>
+                <a href="schedule.html" class="nav-item">
+                    <i>📅</i> <span class="nav-text">Расписание</span>
+                </a>
+                <a href="reports.html" class="nav-item">
+                    <i>📈</i> <span class="nav-text">Отчёты</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i>⚙️</i> <span class="nav-text">Настройки</span>
+                </a>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">ИИ</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Иван Иванов</div>
+                        <div class="user-role" id="userRole">Администратор</div>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i>🚪</i> <span>Выйти</span>
+                </button>
+                <div class="clinic-name">Поликлиника №1</div>
+                <div id="currentDate">01.01.2023</div>
+            </div>
+        </div>
+
+        <!-- Основное содержимое -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1>Профиль сотрудника</h1>
+                <div>
+                    <button class="btn btn-outline" onclick="window.history.back()">Назад</button>
+                    <button class="btn btn-primary" id="printBtn">Печать</button>
+                </div>
+            </div>
+            <div class="content-body">
+                <!-- Заголовок с информацией о сотруднике -->
+                <div class="detail-header">
+                    <div class="detail-avatar">СО</div>
+                    <div class="detail-info">
+                        <h1 id="staffName">Смирнова Ольга Владимировна</h1>
+                        <div class="detail-meta">
+                            <span id="staffSpecialty">Терапевт</span> | 
+                            <span id="staffExperience">5 лет опыта</span> | 
+                            <span id="staffPhone">+7 (912) 123-45-67</span>
+                        </div>
+                        <div class="status-badge status-available" id="staffStatus">На смене</div>
+                    </div>
+                    <div class="detail-actions">
+                        <button class="btn btn-outline" id="editStaffBtn">Редактировать</button>
+                        <button class="btn btn-primary" id="scheduleAppointmentBtn">Назначить прием</button>
+                    </div>
+                </div>
+
+                <!-- Вкладки -->
+                <div class="detail-tabs">
+                    <div class="tab active" data-tab="info">Основная информация</div>
+                    <div class="tab" data-tab="schedule">Расписание</div>
+                    <div class="tab" data-tab="patients">Пациенты</div>
+                    <div class="tab" data-tab="documents">Документы</div>
+                </div>
+
+                <!-- Содержимое вкладок -->
+                <div class="tab-content active" id="infoTab">
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h3>Личная информация</h3>
+                            <div class="info-item">
+                                <span class="info-label">Дата рождения:</span>
+                                <span id="staffBirthdate">15.03.1985</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Пол:</span>
+                                <span id="staffGender">Женский</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Адрес:</span>
+                                <span id="staffAddress">ул. Лесная, 10, кв. 25</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Дата приема на работу:</span>
+                                <span id="staffHireDate">15.03.2018</span>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>Контактная информация</h3>
+                            <div class="info-item">
+                                <span class="info-label">Телефон:</span>
+                                <span id="staffPhoneDetail">+7 (912) 123-45-67</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Email:</span>
+                                <span id="staffEmail">smirnova@clinic.ru</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Экстренный контакт:</span>
+                                <span id="staffEmergencyContact">Иванов Иван Иванович (+7 912 345-67-89)</span>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>Профессиональная информация</h3>
+                            <div class="info-item">
+                                <span class="info-label">Специальность:</span>
+                                <span id="staffSpecialtyDetail">Терапевт</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Квалификация:</span>
+                                <span id="staffQualification">Высшая категория</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Образование:</span>
+                                <span id="staffEducation">Московский государственный медицинский университет</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Стаж работы:</span>
+                                <span id="staffExperienceDetail">5 лет</span>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>Рабочая информация</h3>
+                            <div class="info-item">
+                                <span class="info-label">Отдел:</span>
+                                <span id="staffDepartment">Терапевтическое отделение</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Должность:</span>
+                                <span id="staffPosition">Врач-терапевт</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Зарплата:</span>
+                                <span id="staffSalary">65,000 руб.</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">График работы:</span>
+                                <span id="staffSchedule">Пн-Пт, 9:00-18:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="scheduleTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Расписание на неделю</h3>
+                            <button class="btn btn-sm btn-outline" id="viewFullScheduleBtn">Полное расписание</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>День</th>
+                                            <th>Время</th>
+                                            <th>Тип приема</th>
+                                            <th>Пациент</th>
+                                            <th>Статус</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Понедельник, 20.02</td>
+                                            <td>09:00 - 10:00</td>
+                                            <td>Консультация</td>
+                                            <td>Иванов И.И.</td>
+                                            <td><span class="status-badge status-available">Запланирован</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Понедельник, 20.02</td>
+                                            <td>10:30 - 11:30</td>
+                                            <td>Осмотр</td>
+                                            <td>Петрова А.С.</td>
+                                            <td><span class="status-badge status-available">Запланирован</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Вторник, 21.02</td>
+                                            <td>14:00 - 15:00</td>
+                                            <td>Консультация</td>
+                                            <td>Сидоров А.П.</td>
+                                            <td><span class="status-badge status-available">Подтвержден</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Среда, 22.02</td>
+                                            <td>11:00 - 12:00</td>
+                                            <td>Процедура</td>
+                                            <td>Козлова М.В.</td>
+                                            <td><span class="status-badge status-vacation">Запланирован</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Статистика приемов</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-grid">
+                                <div class="stat-card">
+                                    <h3>Приемов за месяц</h3>
+                                    <div class="value">42</div>
+                                    <div class="trend up">+5 за прошлый месяц</div>
+                                </div>
+                                <div class="stat-card">
+                                    <h3>Средняя оценка</h3>
+                                    <div class="value">4.8/5</div>
+                                    <div class="trend up">+0.2 за прошлый месяц</div>
+                                </div>
+                                <div class="stat-card">
+                                    <h3>Заполненность расписания</h3>
+                                    <div class="value">85%</div>
+                                    <div class="trend up">+10% за прошлый месяц</div>
+                                </div>
+                                <div class="stat-card">
+                                    <h3>Отмененных приемов</h3>
+                                    <div class="value">3</div>
+                                    <div class="trend down">-2 за прошлый месяц</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="patientsTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Текущие пациенты</h3>
+                            <div class="search-container" style="margin: 0; width: auto;">
+                                <input type="text" class="search-input" placeholder="Поиск пациентов..." style="width: 200px;">
+                                <button class="btn btn-primary btn-sm">Найти</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Пациент</th>
+                                            <th>Дата последнего приема</th>
+                                            <th>Следующий прием</th>
+                                            <th>Диагноз</th>
+                                            <th>Статус</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Иванов Иван Иванович</td>
+                                            <td>15.01.2023</td>
+                                            <td>20.02.2023</td>
+                                            <td>Гипертония</td>
+                                            <td><span class="status-badge status-active">Активный</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Петрова Анна Сергеевна</td>
+                                            <td>10.01.2023</td>
+                                            <td>25.02.2023</td>
+                                            <td>ОРВИ</td>
+                                            <td><span class="status-badge status-active">Активный</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Сидоров Алексей Петрович</td>
+                                            <td>05.01.2023</td>
+                                            <td>15.03.2023</td>
+                                            <td>Артрит</td>
+                                            <td><span class="status-badge status-active">Активный</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Козлова Мария Владимировна</td>
+                                            <td>20.12.2022</td>
+                                            <td>01.03.2023</td>
+                                            <td>Профилактический осмотр</td>
+                                            <td><span class="status-badge status-active">Активный</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="documentsTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Документы сотрудника</h3>
+                            <button class="btn btn-sm btn-accent" id="uploadDocumentBtn">Загрузить документ</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Название</th>
+                                            <th>Тип</th>
+                                            <th>Дата</th>
+                                            <th>Размер</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Диплом о высшем образовании</td>
+                                            <td>Образование</td>
+                                            <td>15.06.2010</td>
+                                            <td>1.5 МБ</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Скачать</button>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Сертификат специалиста</td>
+                                            <td>Квалификация</td>
+                                            <td>20.03.2020</td>
+                                            <td>856 КБ</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Скачать</button>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Трудовая книжка</td>
+                                            <td>Трудовая</td>
+                                            <td>15.03.2018</td>
+                                            <td>2.3 МБ</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Скачать</button>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Договор о найме</td>
+                                            <td>Договор</td>
+                                            <td>10.03.2018</td>
+                                            <td>345 КБ</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Скачать</button>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification" class="notification">
+        <span id="notificationText"></span>
+        <button class="close-notification">&times;</button>
+    </div>
+
+    <script>
+        // Функция для показа уведомлений
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            // Автоматическое скрытие через 5 секунд
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Закрытие уведомления по клику на крестик
+        document.querySelector('.close-notification').addEventListener('click', function() {
+            document.getElementById('notification').classList.remove('show');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверка авторизации
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Получение ID сотрудника из URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const staffId = urlParams.get('id');
+
+            // Данные сотрудника (в реальном приложении здесь был бы запрос к серверу)
+            const staff = {
+                id: 1,
+                name: "Смирнова Ольга Владимировна",
+                specialty: "Терапевт",
+                birthdate: "1985-03-15",
+                gender: "female",
+                address: "ул. Лесная, 10, кв. 25",
+                phone: "+7 (912) 123-45-67",
+                email: "smirnova@clinic.ru",
+                emergencyContact: "Иванов Иван Иванович (+7 912 345-67-89)",
+                hireDate: "2018-03-15",
+                qualification: "Высшая категория",
+                education: "Московский государственный медицинский университет",
+                experience: "5 лет",
+                department: "Терапевтическое отделение",
+                position: "Врач-терапевт",
+                salary: "65,000 руб.",
+                schedule: "Пн-Пт, 9:00-18:00",
+                status: "available"
+            };
+
+            // DOM элементы
+            const logoutBtn = document.getElementById('logoutBtn');
+            const currentDateElement = document.getElementById('currentDate');
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+            const userRole = document.getElementById('userRole');
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const printBtn = document.getElementById('printBtn');
+            const editStaffBtn = document.getElementById('editStaffBtn');
+            const scheduleAppointmentBtn = document.getElementById('scheduleAppointmentBtn');
+            const viewFullScheduleBtn = document.getElementById('viewFullScheduleBtn');
+            const uploadDocumentBtn = document.getElementById('uploadDocumentBtn');
+
+            // Установка текущей даты
+            function setCurrentDate() {
+                const now = new Date();
+                const formattedDate = now.toLocaleDateString('ru-RU');
+                currentDateElement.textContent = formattedDate;
+            }
+
+            // Загрузка данных пользователя
+            function loadUserData() {
+                const savedName = localStorage.getItem('userName');
+                const savedRole = localStorage.getItem('userRole');
+                
+                if (savedName) {
+                    userName.textContent = savedName;
+                    // Создаем инициалы для аватара
+                    const initials = savedName.split(' ').map(n => n[0]).join('');
+                    userAvatar.textContent = initials;
+                }
+                
+                if (savedRole) {
+                    userRole.textContent = savedRole;
+                }
+            }
+
+            // Заполнение данных сотрудника
+            function populateStaffData() {
+                document.getElementById('staffName').textContent = staff.name;
+                document.getElementById('staffSpecialty').textContent = staff.specialty;
+                document.getElementById('staffPhone').textContent = staff.phone;
+                document.getElementById('staffBirthdate').textContent = formatDate(staff.birthdate);
+                document.getElementById('staffGender').textContent = staff.gender === 'female' ? 'Женский' : 'Мужской';
+                document.getElementById('staffAddress').textContent = staff.address;
+                document.getElementById('staffHireDate').textContent = formatDate(staff.hireDate);
+                document.getElementById('staffPhoneDetail').textContent = staff.phone;
+                document.getElementById('staffEmail').textContent = staff.email;
+                document.getElementById('staffEmergencyContact').textContent = staff.emergencyContact;
+                document.getElementById('staffSpecialtyDetail').textContent = staff.specialty;
+                document.getElementById('staffQualification').textContent = staff.qualification;
+                document.getElementById('staffEducation').textContent = staff.education;
+                document.getElementById('staffExperienceDetail').textContent = staff.experience;
+                document.getElementById('staffDepartment').textContent = staff.department;
+                document.getElementById('staffPosition').textContent = staff.position;
+                document.getElementById('staffSalary').textContent = staff.salary;
+                document.getElementById('staffSchedule').textContent = staff.schedule;
+                
+                // Расчет стажа
+                const hireDate = new Date(staff.hireDate);
+                const today = new Date();
+                const experienceYears = today.getFullYear() - hireDate.getFullYear();
+                const experienceMonths = today.getMonth() - hireDate.getMonth();
+                let experienceText = `${experienceYears} лет`;
+                if (experienceMonths > 0) {
+                    experienceText += ` ${experienceMonths} мес.`;
+                }
+                document.getElementById('staffExperience').textContent = experienceText;
+            }
+
+            // Форматирование даты
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('ru-RU');
+            }
+
+            // Переключение вкладок
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Убираем активный класс у всех вкладок и содержимого
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Добавляем активный класс текущей вкладке и соответствующему содержимому
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('data-tab') + 'Tab';
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // Обработчики событий
+            printBtn.addEventListener('click', () => {
+                window.print();
+            });
+
+            editStaffBtn.addEventListener('click', () => {
+                showNotification('Редактирование профиля сотрудника', 'info');
+            });
+
+            scheduleAppointmentBtn.addEventListener('click', () => {
+                showNotification('Назначение приема у сотрудника', 'info');
+            });
+
+            viewFullScheduleBtn.addEventListener('click', () => {
+                showNotification('Просмотр полного расписания', 'info');
+            });
+
+            uploadDocumentBtn.addEventListener('click', () => {
+                showNotification('Загрузка документа сотрудника', 'info');
+            });
+
+            // Выход из системы
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userRole');
+                window.location.href = 'index.html';
+            });
+
+            // Инициализация
+            setCurrentDate();
+            loadUserData();
+            populateStaffData();
+        });
+    </script>
+</body>
+</html>

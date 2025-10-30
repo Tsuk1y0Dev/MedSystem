@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Персонал - Медицинская система</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Боковая панель навигации -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>МедСистема</h2>
+                <p>Поликлиника №1</p>
+            </div>
+            <div class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i>📊</i> <span class="nav-text">Главная</span>
+                </a>
+                <a href="patients.html" class="nav-item">
+                    <i>👥</i> <span class="nav-text">Пациенты</span>
+                </a>
+                <a href="staff.html" class="nav-item active">
+                    <i>👨‍⚕️</i> <span class="nav-text">Персонал</span>
+                </a>
+                <a href="schedule.html" class="nav-item">
+                    <i>📅</i> <span class="nav-text">Расписание</span>
+                </a>
+                <a href="reports.html" class="nav-item">
+                    <i>📈</i> <span class="nav-text">Отчёты</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i>⚙️</i> <span class="nav-text">Настройки</span>
+                </a>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">ИИ</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Иван Иванов</div>
+                        <div class="user-role" id="userRole">Администратор</div>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i>🚪</i> <span>Выйти</span>
+                </button>
+                <div class="clinic-name">Поликлиника №1</div>
+                <div id="currentDate">01.01.2023</div>
+            </div>
+        </div>
+
+        <!-- Основное содержимое -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1>Управление персоналом</h1>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="staffSearch" placeholder="Поиск сотрудников...">
+                    <button class="btn btn-primary" id="searchBtn">Найти</button>
+                </div>
+            </div>
+            <div class="content-body">
+                <div class="page-title">
+                    <h1>Сотрудники</h1>
+                    <button class="btn btn-accent" id="addStaffBtn">Добавить сотрудника</button>
+                </div>
+
+                <!-- Фильтры -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <div class="filter-label">Специальность</div>
+                        <select class="form-control" id="specialtyFilter">
+                            <option value="">Все специальности</option>
+                            <option value="therapist">Терапевт</option>
+                            <option value="surgeon">Хирург</option>
+                            <option value="pediatrician">Педиатр</option>
+                            <option value="cardiologist">Кардиолог</option>
+                            <option value="neurologist">Невролог</option>
+                            <option value="nurse">Медсестра</option>
+                            <option value="administrator">Администратор</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-label">Статус</div>
+                        <select class="form-control" id="statusFilter">
+                            <option value="">Все статусы</option>
+                            <option value="available">На смене</option>
+                            <option value="vacation">В отпуске</option>
+                            <option value="sick">На больничном</option>
+                            <option value="busy">Занят</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-label">Сортировка</div>
+                        <select class="form-control" id="sortBy">
+                            <option value="name">По имени</option>
+                            <option value="specialty">По специальности</option>
+                            <option value="patients">По количеству пациентов</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-label">&nbsp;</div>
+                        <button class="btn btn-outline" id="resetFiltersBtn">Сбросить фильтры</button>
+                    </div>
+                </div>
+
+                <!-- Таблица персонала -->
+                <div class="table-container">
+                    <table id="staffTable">
+                        <thead>
+                            <tr>
+                                <th>Имя</th>
+                                <th>Специальность</th>
+                                <th>Статус</th>
+                                <th>Пациентов</th>
+                                <th>Контакты</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Таблица будет заполнена через JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Пагинация -->
+                <div class="pagination" id="pagination">
+                    <!-- Пагинация будет создана через JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Вторая боковая панель -->
+        <div class="secondary-sidebar">
+            <h2 class="stats-title">Кадровый обзор</h2>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Свободные вакансии</h3>
+                    <div class="value" id="vacanciesCount">5</div>
+                    <div class="trend down">-1 за месяц</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Заполненность смен</h3>
+                    <div class="value" id="shiftFillRate">78%</div>
+                    <div class="trend up">+5% за месяц</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Врачей в штате</h3>
+                    <div class="value" id="doctorsCount">24</div>
+                    <div class="trend up">+2 за месяц</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Среднее пациентов на врача</h3>
+                    <div class="value" id="avgPatientsPerDoctor">12.5</div>
+                    <div class="trend up">+1.2 за месяц</div>
+                </div>
+            </div>
+
+            <h2 class="stats-title">Расписание</h2>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Смен на этой неделе</h3>
+                    <div class="value">42</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Свободные слоты</h3>
+                    <div class="value">18</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Запланированные приемы</h3>
+                    <div class="value">156</div>
+                </div>
+            </div>
+
+            <h2 class="stats-title">Быстрые действия</h2>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn btn-outline" id="createScheduleBtn">Создать расписание</button>
+                <button class="btn btn-outline" id="assignDutyBtn">Назначить дежурство</button>
+                <button class="btn btn-outline" id="generateReportBtn">Сгенерировать отчет</button>
+                <button class="btn btn-outline" id="updateVacanciesBtn">Обновить вакансии</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления сотрудника -->
+    <div id="addStaffModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Добавить сотрудника</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="staffName">ФИО</label>
+                        <input type="text" class="form-control" id="staffName" placeholder="Введите ФИО сотрудника">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="staffSpecialty">Специальность</label>
+                        <select class="form-control" id="staffSpecialty">
+                            <option value="">Выберите специальность</option>
+                            <option value="therapist">Терапевт</option>
+                            <option value="surgeon">Хирург</option>
+                            <option value="pediatrician">Педиатр</option>
+                            <option value="cardiologist">Кардиолог</option>
+                            <option value="neurologist">Невролог</option>
+                            <option value="nurse">Медсестра</option>
+                            <option value="administrator">Администратор</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="staffPhone">Телефон</label>
+                        <input type="tel" class="form-control" id="staffPhone" placeholder="Введите номер телефона">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="staffEmail">Email</label>
+                        <input type="email" class="form-control" id="staffEmail" placeholder="Введите email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="staffAddress">Адрес</label>
+                    <input type="text" class="form-control" id="staffAddress" placeholder="Введите адрес">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="staffHireDate">Дата приема на работу</label>
+                        <input type="date" class="form-control" id="staffHireDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="staffSalary">Зарплата</label>
+                        <input type="number" class="form-control" id="staffSalary" placeholder="Введите зарплату">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="staffNotes">Примечания</label>
+                    <textarea class="form-control" id="staffNotes" rows="3" placeholder="Дополнительная информация"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelStaffBtn">Отмена</button>
+                <button class="btn btn-primary" id="saveStaffBtn">
+                    <span id="saveStaffBtnText">Сохранить</span>
+                    <div class="loading hidden" id="saveStaffLoading"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно подтверждения удаления -->
+    <div id="deleteStaffModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Удаление сотрудника</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить сотрудника <strong id="deleteStaffName"></strong>?</p>
+                <p>Это действие нельзя отменить.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelDeleteBtn">Отмена</button>
+                <button class="btn btn-error" id="confirmDeleteBtn">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification" class="notification">
+        <span id="notificationText"></span>
+        <button class="close-notification">&times;</button>
+    </div>
+
+    <script>
+        // Функция для показа уведомлений
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            // Автоматическое скрытие через 5 секунд
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Закрытие уведомления по клику на крестик
+        document.querySelector('.close-notification').addEventListener('click', function() {
+            document.getElementById('notification').classList.remove('show');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверка авторизации
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Получение данных персонала из localStorage или установка начальных данных
+            let staff = JSON.parse(localStorage.getItem('staff')) || [
+                { 
+                    id: 1, 
+                    name: "Смирнова Ольга Владимировна", 
+                    specialty: "Терапевт", 
+                    status: "available", 
+                    patients: 15,
+                    phone: "+7 (912) 123-45-67",
+                    email: "smirnova@clinic.ru",
+                    hireDate: "2018-03-15",
+                    salary: 65000,
+                    address: "ул. Лесная, 10, кв. 25",
+                    notes: "Высшая квалификационная категория"
+                },
+                { 
+                    id: 2, 
+                    name: "Кузнецов Дмитрий Александрович", 
+                    specialty: "Хирург", 
+                    status: "vacation", 
+                    patients: 8,
+                    phone: "+7 (912) 234-56-78",
+                    email: "kuznetsov@clinic.ru",
+                    hireDate: "2019-07-22",
+                    salary: 85000,
+                    address: "пр. Мира, 45, кв. 12",
+                    notes: "Специализация: абдоминальная хирургия"
+                },
+                { 
+                    id: 3, 
+                    name: "Васильева Екатерина Игоревна", 
+                    specialty: "Педиатр", 
+                    status: "available", 
+                    patients: 22,
+                    phone: "+7 (912) 345-67-89",
+                    email: "vasileva@clinic.ru",
+                    hireDate: "2017-11-05",
+                    salary: 60000,
+                    address: "ул. Школьная, 3, кв. 7",
+                    notes: "Кандидат медицинских наук"
+                },
+                { 
+                    id: 4, 
+                    name: "Попов Андрей Сергеевич", 
+                    specialty: "Кардиолог", 
+                    status: "busy", 
+                    patients: 12,
+                    phone: "+7 (912) 456-78-90",
+                    email: "popov@clinic.ru",
+                    hireDate: "2020-02-18",
+                    salary: 75000,
+                    address: "ул. Садовая, 15, кв. 33",
+                    notes: ""
+                },
+                { 
+                    id: 5, 
+                    name: "Федорова Мария Дмитриевна", 
+                    specialty: "Невролог", 
+                    status: "available", 
+                    patients: 18,
+                    phone: "+7 (912) 567-89-01",
+                    email: "fedorova@clinic.ru",
+                    hireDate: "2019-09-30",
+                    salary: 70000,
+                    address: "пр. Победы, 28, кв. 19",
+                    notes: "Специализация: детская неврология"
+                },
+                { 
+                    id: 6, 
+                    name: "Новикова Анна Павловна", 
+                    specialty: "Медсестра", 
+                    status: "available", 
+                    patients: 0,
+                    phone: "+7 (912) 678-90-12",
+                    email: "novikova@clinic.ru",
+                    hireDate: "2021-05-10",
+                    salary: 35000,
+                    address: "ул. Молодежная, 7, кв. 14",
+                    notes: "Старшая медсестра терапевтического отделения"
+                }
+            ];
+
+            // DOM элементы
+            const staffTable = document.querySelector('#staffTable tbody');
+            const addStaffBtn = document.getElementById('addStaffBtn');
+            const addStaffModal = document.getElementById('addStaffModal');
+            const cancelStaffBtn = document.getElementById('cancelStaffBtn');
+            const saveStaffBtn = document.getElementById('saveStaffBtn');
+            const saveStaffBtnText = document.getElementById('saveStaffBtnText');
+            const saveStaffLoading = document.getElementById('saveStaffLoading');
+            const closeBtns = document.querySelectorAll('.close-btn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const currentDateElement = document.getElementById('currentDate');
+            const staffSearch = document.getElementById('staffSearch');
+            const searchBtn = document.getElementById('searchBtn');
+            const specialtyFilter = document.getElementById('specialtyFilter');
+            const statusFilter = document.getElementById('statusFilter');
+            const sortBy = document.getElementById('sortBy');
+            const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+            const userRole = document.getElementById('userRole');
+            const createScheduleBtn = document.getElementById('createScheduleBtn');
+            const assignDutyBtn = document.getElementById('assignDutyBtn');
+            const generateReportBtn = document.getElementById('generateReportBtn');
+            const updateVacanciesBtn = document.getElementById('updateVacanciesBtn');
+            const deleteStaffModal = document.getElementById('deleteStaffModal');
+            const deleteStaffName = document.getElementById('deleteStaffName');
+            const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+            let staffToDelete = null;
+            let currentPage = 1;
+            const staffPerPage = 5;
+
+            // Установка текущей даты
+            function setCurrentDate() {
+                const now = new Date();
+                const formattedDate = now.toLocaleDateString('ru-RU');
+                currentDateElement.textContent = formattedDate;
+            }
+
+            // Загрузка данных пользователя
+            function loadUserData() {
+                const savedName = localStorage.getItem('userName');
+                const savedRole = localStorage.getItem('userRole');
+                
+                if (savedName) {
+                    userName.textContent = savedName;
+                    // Создаем инициалы для аватара
+                    const initials = savedName.split(' ').map(n => n[0]).join('');
+                    userAvatar.textContent = initials;
+                }
+                
+                if (savedRole) {
+                    userRole.textContent = savedRole;
+                }
+            }
+
+            // Сохранение персонала в localStorage
+            function saveStaffToStorage() {
+                localStorage.setItem('staff', JSON.stringify(staff));
+            }
+
+            // Фильтрация и сортировка персонала
+            function getFilteredAndSortedStaff() {
+                let filteredStaff = [...staff];
+                
+                // Фильтрация по специальности
+                const specialtyValue = specialtyFilter.value;
+                if (specialtyValue) {
+                    filteredStaff = filteredStaff.filter(employee => employee.specialty === specialtyValue);
+                }
+                
+                // Фильтрация по статусу
+                const statusValue = statusFilter.value;
+                if (statusValue) {
+                    filteredStaff = filteredStaff.filter(employee => employee.status === statusValue);
+                }
+                
+                // Поиск
+                const searchTerm = staffSearch.value.toLowerCase();
+                if (searchTerm) {
+                    filteredStaff = filteredStaff.filter(employee => 
+                        employee.name.toLowerCase().includes(searchTerm) ||
+                        employee.specialty.toLowerCase().includes(searchTerm) ||
+                        employee.phone.includes(searchTerm) ||
+                        employee.email.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                // Сортировка
+                const sortValue = sortBy.value;
+                if (sortValue === 'name') {
+                    filteredStaff.sort((a, b) => a.name.localeCompare(b.name));
+                } else if (sortValue === 'specialty') {
+                    filteredStaff.sort((a, b) => a.specialty.localeCompare(b.specialty));
+                } else if (sortValue === 'patients') {
+                    filteredStaff.sort((a, b) => b.patients - a.patients);
+                }
+                
+                return filteredStaff;
+            }
+
+            // Рендеринг таблицы персонала
+            function renderStaff() {
+                const filteredStaff = getFilteredAndSortedStaff();
+                staffTable.innerHTML = '';
+                
+                if (filteredStaff.length === 0) {
+                    staffTable.innerHTML = '<tr><td colspan="6" class="text-center" style="padding: 20px;">Сотрудники не найдены</td></tr>';
+                    renderPagination(0);
+                    return;
+                }
+                
+                // Пагинация
+                const totalPages = Math.ceil(filteredStaff.length / staffPerPage);
+                const startIndex = (currentPage - 1) * staffPerPage;
+                const endIndex = startIndex + staffPerPage;
+                const staffToShow = filteredStaff.slice(startIndex, endIndex);
+                
+                staffToShow.forEach(employee => {
+                    const statusText = getStatusText(employee.status);
+                    const statusClass = `status-${employee.status}`;
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${employee.name}</td>
+                        <td>${employee.specialty}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>${employee.patients}</td>
+                        <td>
+                            <div>${employee.phone}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-gray);">${employee.email}</div>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline" onclick="viewStaffProfile(${employee.id})">Профиль</button>
+                            <button class="btn btn-sm btn-outline" onclick="editStaff(${employee.id})">Редактировать</button>
+                            <button class="btn btn-sm btn-error" onclick="deleteStaff(${employee.id})">Удалить</button>
+                        </td>
+                    `;
+                    staffTable.appendChild(row);
+                });
+                
+                renderPagination(filteredStaff.length);
+            }
+
+            // Получение текста статуса
+            function getStatusText(status) {
+                switch(status) {
+                    case 'available': return 'На смене';
+                    case 'vacation': return 'В отпуске';
+                    case 'sick': return 'На больничном';
+                    case 'busy': return 'Занят';
+                    default: return status;
+                }
+            }
+
+            // Рендеринг пагинации
+            function renderPagination(totalStaff) {
+                const totalPages = Math.ceil(totalStaff / staffPerPage);
+                const pagination = document.getElementById('pagination');
+                pagination.innerHTML = '';
+                
+                if (totalPages <= 1) return;
+                
+                // Кнопка "Назад"
+                const prevButton = document.createElement('button');
+                prevButton.textContent = '‹';
+                prevButton.disabled = currentPage === 1;
+                prevButton.addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        renderStaff();
+                    }
+                });
+                pagination.appendChild(prevButton);
+                
+                // Номера страниц
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageButton = document.createElement('button');
+                    pageButton.textContent = i;
+                    pageButton.className = i === currentPage ? 'active' : '';
+                    pageButton.addEventListener('click', () => {
+                        currentPage = i;
+                        renderStaff();
+                    });
+                    pagination.appendChild(pageButton);
+                }
+                
+                // Кнопка "Вперед"
+                const nextButton = document.createElement('button');
+                nextButton.textContent = '›';
+                nextButton.disabled = currentPage === totalPages;
+                nextButton.addEventListener('click', () => {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        renderStaff();
+                    }
+                });
+                pagination.appendChild(nextButton);
+            }
+
+            // Сброс фильтров
+            function resetFilters() {
+                specialtyFilter.value = '';
+                statusFilter.value = '';
+                sortBy.value = 'name';
+                staffSearch.value = '';
+                currentPage = 1;
+                renderStaff();
+                showNotification('Фильтры сброшены', 'success');
+            }
+
+            // Обработчики событий
+            addStaffBtn.addEventListener('click', () => {
+                addStaffModal.classList.add('active');
+            });
+
+            cancelStaffBtn.addEventListener('click', () => {
+                addStaffModal.classList.remove('active');
+                // Очистка формы
+                document.getElementById('staffName').value = '';
+                document.getElementById('staffSpecialty').value = '';
+                document.getElementById('staffPhone').value = '';
+                document.getElementById('staffEmail').value = '';
+                document.getElementById('staffAddress').value = '';
+                document.getElementById('staffHireDate').value = '';
+                document.getElementById('staffSalary').value = '';
+                document.getElementById('staffNotes').value = '';
+            });
+
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const modal = e.target.closest('.modal');
+                    modal.classList.remove('active');
+                });
+            });
+
+            saveStaffBtn.addEventListener('click', () => {
+                // Получение данных из формы
+                const name = document.getElementById('staffName').value;
+                const specialty = document.getElementById('staffSpecialty').value;
+                const phone = document.getElementById('staffPhone').value;
+                const email = document.getElementById('staffEmail').value;
+                const address = document.getElementById('staffAddress').value;
+                const hireDate = document.getElementById('staffHireDate').value;
+                const salary = document.getElementById('staffSalary').value;
+                const notes = document.getElementById('staffNotes').value;
+                
+                // Простая валидация
+                if (!name || !specialty || !phone || !email) {
+                    showNotification('Пожалуйста, заполните обязательные поля: ФИО, специальность, телефон и email', 'error');
+                    return;
+                }
+                
+                // Показать индикатор загрузки
+                saveStaffBtnText.classList.add('hidden');
+                saveStaffLoading.classList.remove('hidden');
+                saveStaffBtn.disabled = true;
+                
+                // Имитация сохранения
+                setTimeout(() => {
+                    // Добавление нового сотрудника
+                    const newStaff = {
+                        id: staff.length > 0 ? Math.max(...staff.map(s => s.id)) + 1 : 1,
+                        name,
+                        specialty,
+                        status: "available",
+                        patients: 0,
+                        phone,
+                        email,
+                        address,
+                        hireDate,
+                        salary,
+                        notes
+                    };
+                    
+                    staff.push(newStaff);
+                    saveStaffToStorage();
+                    renderStaff();
+                    addStaffModal.classList.remove('active');
+                    
+                    // Скрыть индикатор загрузки
+                    saveStaffBtnText.classList.remove('hidden');
+                    saveStaffLoading.classList.add('hidden');
+                    saveStaffBtn.disabled = false;
+                    
+                    // Очистка формы
+                    document.getElementById('staffName').value = '';
+                    document.getElementById('staffSpecialty').value = '';
+                    document.getElementById('staffPhone').value = '';
+                    document.getElementById('staffEmail').value = '';
+                    document.getElementById('staffAddress').value = '';
+                    document.getElementById('staffHireDate').value = '';
+                    document.getElementById('staffSalary').value = '';
+                    document.getElementById('staffNotes').value = '';
+                    
+                    showNotification('Сотрудник успешно добавлен!', 'success');
+                }, 1000);
+            });
+
+            searchBtn.addEventListener('click', () => {
+                currentPage = 1;
+                renderStaff();
+            });
+
+            staffSearch.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    currentPage = 1;
+                    renderStaff();
+                }
+            });
+
+            specialtyFilter.addEventListener('change', () => {
+                currentPage = 1;
+                renderStaff();
+            });
+
+            statusFilter.addEventListener('change', () => {
+                currentPage = 1;
+                renderStaff();
+            });
+
+            sortBy.addEventListener('change', () => {
+                currentPage = 1;
+                renderStaff();
+            });
+
+            resetFiltersBtn.addEventListener('click', resetFilters);
+
+            // Обработчики быстрых действий
+            createScheduleBtn.addEventListener('click', () => {
+                showNotification('Функция создания расписания', 'info');
+            });
+
+            assignDutyBtn.addEventListener('click', () => {
+                showNotification('Функция назначения дежурства', 'info');
+            });
+
+            generateReportBtn.addEventListener('click', () => {
+                showNotification('Функция генерации отчета', 'info');
+            });
+
+            updateVacanciesBtn.addEventListener('click', () => {
+                showNotification('Функция обновления вакансий', 'info');
+            });
+
+            // Выход из системы
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userRole');
+                window.location.href = 'index.html';
+            });
+
+            // Подтверждение удаления сотрудника
+            cancelDeleteBtn.addEventListener('click', () => {
+                deleteStaffModal.classList.remove('active');
+                staffToDelete = null;
+            });
+
+            confirmDeleteBtn.addEventListener('click', () => {
+                if (staffToDelete) {
+                    staff = staff.filter(s => s.id !== staffToDelete);
+                    saveStaffToStorage();
+                    renderStaff();
+                    deleteStaffModal.classList.remove('active');
+                    staffToDelete = null;
+                    showNotification('Сотрудник успешно удален', 'success');
+                }
+            });
+
+            // Глобальные функции для кнопок
+            window.viewStaffProfile = function(staffId) {
+                window.location.href = `staff-details.html?id=${staffId}`;
+            };
+
+            window.editStaff = function(staffId) {
+                // В реальном приложении здесь будет открытие формы редактирования
+                showNotification(`Редактирование сотрудника с ID: ${staffId}`, 'info');
+            };
+
+            window.deleteStaff = function(staffId) {
+                const employee = staff.find(s => s.id === staffId);
+                if (employee) {
+                    staffToDelete = staffId;
+                    deleteStaffName.textContent = employee.name;
+                    deleteStaffModal.classList.add('active');
+                }
+            };
+
+            // Инициализация
+            setCurrentDate();
+            loadUserData();
+            renderStaff();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали пациента - Медицинская система</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Боковая панель навигации -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>МедСистема</h2>
+                <p>Поликлиника №1</p>
+            </div>
+            <div class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i>📊</i> <span class="nav-text">Главная</span>
+                </a>
+                <a href="patients.html" class="nav-item">
+                    <i>👥</i> <span class="nav-text">Пациенты</span>
+                </a>
+                <a href="staff.html" class="nav-item">
+                    <i>👨‍⚕️</i> <span class="nav-text">Персонал</span>
+                </a>
+                <a href="schedule.html" class="nav-item">
+                    <i>📅</i> <span class="nav-text">Расписание</span>
+                </a>
+                <a href="reports.html" class="nav-item">
+                    <i>📈</i> <span class="nav-text">Отчёты</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i>⚙️</i> <span class="nav-text">Настройки</span>
+                </a>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">ИИ</div>
+                    <div class="user-details">
+                        <div class="user-name">Иван Иванов</div>
+                        <div class="user-role">Администратор</div>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i>🚪</i> <span>Выйти</span>
+                </button>
+                <div class="clinic-name">Поликлиника №1</div>
+                <div id="currentDate">01.01.2023</div>
+            </div>
+        </div>
+
+        <!-- Основное содержимое -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1>Детали пациента</h1>
+                <div>
+                    <button class="btn btn-outline" onclick="window.history.back()">Назад</button>
+                    <button class="btn btn-primary" id="printBtn">Печать</button>
+                </div>
+            </div>
+            <div class="content-body">
+                <!-- Заголовок с информацией о пациенте -->
+                <div class="detail-header">
+                    <div class="detail-avatar">ИИ</div>
+                    <div class="detail-info">
+                        <h1 id="patientName">Иванов Иван Иванович</h1>
+                        <div class="detail-meta">
+                            <span id="patientAge">45 лет</span> | 
+                            <span id="patientPhone">+7 (912) 345-67-89</span> | 
+                            <span id="patientEmail">ivanov@example.com</span>
+                        </div>
+                        <div class="status-badge status-available" id="patientStatus">Активный</div>
+                    </div>
+                    <div class="detail-actions">
+                        <button class="btn btn-outline" id="editPatientBtn">Редактировать</button>
+                        <button class="btn btn-primary" id="addAppointmentBtn">Записать на приём</button>
+                    </div>
+                </div>
+
+                <!-- Вкладки -->
+                <div class="detail-tabs">
+                    <div class="tab active" data-tab="info">Основная информация</div>
+                    <div class="tab" data-tab="medical">Медицинская карта</div>
+                    <div class="tab" data-tab="appointments">Приёмы</div>
+                    <div class="tab" data-tab="documents">Документы</div>
+                </div>
+
+                <!-- Содержимое вкладок -->
+                <div class="tab-content active" id="infoTab">
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h3>Личная информация</h3>
+                            <div class="info-item">
+                                <span class="info-label">Дата рождения:</span>
+                                <span id="patientBirthdate">15.05.1985</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Пол:</span>
+                                <span id="patientGender">Мужской</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Адрес:</span>
+                                <span id="patientAddress">ул. Ленина, 15, кв. 42</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Дата регистрации:</span>
+                                <span id="patientRegDate">10.03.2020</span>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>Контактная информация</h3>
+                            <div class="info-item">
+                                <span class="info-label">Телефон:</span>
+                                <span id="patientPhoneDetail">+7 (912) 345-67-89</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Email:</span>
+                                <span id="patientEmailDetail">ivanov@example.com</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Экстренный контакт:</span>
+                                <span id="patientEmergencyContact">Петрова Анна Сергеевна (+7 912 987-65-43)</span>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>Страховая информация</h3>
+                            <div class="info-item">
+                                <span class="info-label">Страховой полис:</span>
+                                <span id="patientInsurance">1234567890123456</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Страховая компания:</span>
+                                <span id="patientInsuranceCompany">Страховая компания "Здоровье"</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Действителен до:</span>
+                                <span id="patientInsuranceValid">31.12.2024</span>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>Дополнительная информация</h3>
+                            <div class="info-item">
+                                <span class="info-label">Лечащий врач:</span>
+                                <span id="patientDoctor">Смирнова Ольга Владимировна</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Примечания:</span>
+                                <span id="patientNotes">Аллергия на пенициллин</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="medicalTab">
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h3>История болезней</h3>
+                            <div style="padding: 10px 0;">
+                                <div style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0;">
+                                    <div style="font-weight: 500;">ОРВИ</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-gray);">Диагноз: Острая респираторная вирусная инфекция</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-gray);">Дата: 15.01.2023 - 22.01.2023</div>
+                                </div>
+                                <div style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0;">
+                                    <div style="font-weight: 500;">Гипертония</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-gray);">Диагноз: Артериальная гипертензия I степени</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-gray);">Дата: с 10.03.2020 (хроническое)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>Аллергии</h3>
+                            <div style="padding: 10px 0;">
+                                <div class="status-badge status-busy" style="margin-bottom: 10px;">Пенициллин</div>
+                                <div class="status-badge status-busy">Пыльца растений</div>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>Назначения</h3>
+                            <div style="padding: 10px 0;">
+                                <div style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0;">
+                                    <div style="font-weight: 500;">Лизиноприл</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-gray);">5 мг, 1 раз в день</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-gray);">Назначил: Смирнова О.В., 10.03.2020</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>Лабораторные анализы</h3>
+                            <div style="padding: 10px 0;">
+                                <div style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0;">
+                                    <div style="font-weight: 500;">Общий анализ крови</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-gray);">Дата: 15.01.2023</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-gray);">Результат: в пределах нормы</div>
+                                </div>
+                                <div style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0;">
+                                    <div style="font-weight: 500;">Биохимический анализ</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-gray);">Дата: 15.01.2023</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-gray);">Результат: холестерин повышен</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="appointmentsTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>История приёмов</h3>
+                            <button class="btn btn-sm btn-accent" id="addAppointmentHistoryBtn">Добавить приём</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Дата</th>
+                                            <th>Врач</th>
+                                            <th>Диагноз</th>
+                                            <th>Статус</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>15.01.2023 10:30</td>
+                                            <td>Смирнова Ольга Владимировна</td>
+                                            <td>ОРВИ</td>
+                                            <td><span class="status-badge status-available">Завершён</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>10.11.2022 14:15</td>
+                                            <td>Смирнова Ольга Владимировна</td>
+                                            <td>Профилактический осмотр</td>
+                                            <td><span class="status-badge status-available">Завершён</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>05.07.2022 09:00</td>
+                                            <td>Смирнова Ольга Владимировна</td>
+                                            <td>Жалобы на головную боль</td>
+                                            <td><span class="status-badge status-available">Завершён</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Предстоящие приёмы</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Дата</th>
+                                            <th>Врач</th>
+                                            <th>Тип приёма</th>
+                                            <th>Статус</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>20.02.2023 11:00</td>
+                                            <td>Смирнова Ольга Владимировна</td>
+                                            <td>Повторный приём</td>
+                                            <td><span class="status-badge status-vacation">Запланирован</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Перенести</button>
+                                                <button class="btn btn-sm btn-outline">Отменить</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="documentsTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Документы пациента</h3>
+                            <button class="btn btn-sm btn-accent" id="uploadDocumentBtn">Загрузить документ</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Название</th>
+                                            <th>Тип</th>
+                                            <th>Дата</th>
+                                            <th>Размер</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Результаты анализа крови</td>
+                                            <td>Лабораторный анализ</td>
+                                            <td>15.01.2023</td>
+                                            <td>245 КБ</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Скачать</button>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>ЭКГ</td>
+                                            <td>Диагностика</td>
+                                            <td>10.11.2022</td>
+                                            <td>1.2 МБ</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Скачать</button>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Выписка из истории болезни</td>
+                                            <td>Медицинская документация</td>
+                                            <td>05.07.2022</td>
+                                            <td>356 КБ</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline">Скачать</button>
+                                                <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверка авторизации
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Получение ID пациента из URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const patientId = urlParams.get('id');
+
+            // Данные пациента (в реальном приложении здесь был бы запрос к серверу)
+            const patient = {
+                id: 1, 
+                name: "Иванов Иван Иванович", 
+                birthdate: "1985-05-15", 
+                phone: "+7 (912) 345-67-89", 
+                email: "ivanov@example.com",
+                address: "ул. Ленина, 15, кв. 42", 
+                insurance: "1234567890123456",
+                insuranceCompany: "Страховая компания \"Здоровье\"",
+                insuranceValid: "2024-12-31",
+                status: "active",
+                registrationDate: "2020-03-10",
+                notes: "Аллергия на пенициллин",
+                gender: "Мужской",
+                emergencyContact: "Петрова Анна Сергеевна (+7 912 987-65-43)",
+                doctor: "Смирнова Ольга Владимировна"
+            };
+
+            // DOM элементы
+            const logoutBtn = document.getElementById('logoutBtn');
+            const currentDateElement = document.getElementById('currentDate');
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const printBtn = document.getElementById('printBtn');
+
+            // Установка текущей даты
+            function setCurrentDate() {
+                const now = new Date();
+                const formattedDate = now.toLocaleDateString('ru-RU');
+                currentDateElement.textContent = formattedDate;
+            }
+
+            // Заполнение данных пациента
+            function populatePatientData() {
+                document.getElementById('patientName').textContent = patient.name;
+                document.getElementById('patientAge').textContent = `${calculateAge(patient.birthdate)} лет`;
+                document.getElementById('patientPhone').textContent = patient.phone;
+                document.getElementById('patientEmail').textContent = patient.email;
+                document.getElementById('patientBirthdate').textContent = formatDate(patient.birthdate);
+                document.getElementById('patientGender').textContent = patient.gender;
+                document.getElementById('patientAddress').textContent = patient.address;
+                document.getElementById('patientRegDate').textContent = formatDate(patient.registrationDate);
+                document.getElementById('patientPhoneDetail').textContent = patient.phone;
+                document.getElementById('patientEmailDetail').textContent = patient.email;
+                document.getElementById('patientEmergencyContact').textContent = patient.emergencyContact;
+                document.getElementById('patientInsurance').textContent = patient.insurance;
+                document.getElementById('patientInsuranceCompany').textContent = patient.insuranceCompany;
+                document.getElementById('patientInsuranceValid').textContent = formatDate(patient.insuranceValid);
+                document.getElementById('patientDoctor').textContent = patient.doctor;
+                document.getElementById('patientNotes').textContent = patient.notes;
+            }
+
+            // Расчет возраста
+            function calculateAge(birthdate) {
+                const today = new Date();
+                const birthDate = new Date(birthdate);
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                
+                return age;
+            }
+
+            // Форматирование даты
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('ru-RU');
+            }
+
+            // Переключение вкладок
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Убираем активный класс у всех вкладок и содержимого
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Добавляем активный класс текущей вкладке и соответствующему содержимому
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('data-tab') + 'Tab';
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // Печать
+            printBtn.addEventListener('click', () => {
+                window.print();
+            });
+
+            // Выход из системы
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                window.location.href = 'index.html';
+            });
+
+            // Инициализация
+            setCurrentDate();
+            populatePatientData();
+        });
+    </script>
+</body>
+</html>

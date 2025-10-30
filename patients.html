@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пациенты - Медицинская система</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Боковая панель навигации -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>МедСистема</h2>
+                <p>Поликлиника №1</p>
+            </div>
+            <div class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i>📊</i> <span class="nav-text">Главная</span>
+                </a>
+                <a href="patients.html" class="nav-item active">
+                    <i>👥</i> <span class="nav-text">Пациенты</span>
+                </a>
+                <a href="staff.html" class="nav-item">
+                    <i>👨‍⚕️</i> <span class="nav-text">Персонал</span>
+                </a>
+                <a href="schedule.html" class="nav-item">
+                    <i>📅</i> <span class="nav-text">Расписание</span>
+                </a>
+                <a href="reports.html" class="nav-item">
+                    <i>📈</i> <span class="nav-text">Отчёты</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i>⚙️</i> <span class="nav-text">Настройки</span>
+                </a>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">ИИ</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Иван Иванов</div>
+                        <div class="user-role" id="userRole">Администратор</div>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i>🚪</i> <span>Выйти</span>
+                </button>
+                <div class="clinic-name">Поликлиника №1</div>
+                <div id="currentDate">01.01.2023</div>
+            </div>
+        </div>
+
+        <!-- Основное содержимое -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1>Управление пациентами</h1>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="patientSearch" placeholder="Поиск пациентов...">
+                    <button class="btn btn-primary" id="searchBtn">Найти</button>
+                </div>
+            </div>
+            <div class="content-body">
+                <div class="page-title">
+                    <h1>Список пациентов</h1>
+                    <div class="date-selector">
+                        <span>Дата отображения:</span>
+                        <input type="date" id="dateSelector" class="form-control" style="width: auto;">
+                    </div>
+                </div>
+
+                <!-- Фильтры -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <div class="filter-label">Статус</div>
+                        <select class="form-control" id="statusFilter">
+                            <option value="">Все статусы</option>
+                            <option value="active">Активные</option>
+                            <option value="inactive">Неактивные</option>
+                            <option value="new">Новые</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-label">Возраст</div>
+                        <select class="form-control" id="ageFilter">
+                            <option value="">Все возрасты</option>
+                            <option value="child">Дети (0-17)</option>
+                            <option value="adult">Взрослые (18-64)</option>
+                            <option value="senior">Пожилые (65+)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-label">Сортировка</div>
+                        <select class="form-control" id="sortBy">
+                            <option value="name">По имени</option>
+                            <option value="date">По дате регистрации</option>
+                            <option value="age">По возрасту</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-label">&nbsp;</div>
+                        <button class="btn btn-outline" id="resetFiltersBtn">Сбросить фильтры</button>
+                    </div>
+                </div>
+
+                <!-- Список пациентов -->
+                <div class="patient-list" id="patientList">
+                    <!-- Список будет заполнен через JavaScript -->
+                </div>
+
+                <!-- Пагинация -->
+                <div class="pagination" id="pagination">
+                    <!-- Пагинация будет создана через JavaScript -->
+                </div>
+
+                <!-- Кнопка добавления пациента -->
+                <div class="text-center mt-20">
+                    <button class="btn btn-accent" id="addPatientBtn">Добавить пациента</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления пациента -->
+    <div id="addPatientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Добавить пациента</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="patientName">ФИО</label>
+                        <input type="text" class="form-control" id="patientName" placeholder="Введите ФИО пациента">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="patientBirthdate">Дата рождения</label>
+                        <input type="date" class="form-control" id="patientBirthdate">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="patientPhone">Телефон</label>
+                        <input type="tel" class="form-control" id="patientPhone" placeholder="Введите номер телефона">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="patientEmail">Email</label>
+                        <input type="email" class="form-control" id="patientEmail" placeholder="Введите email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="patientAddress">Адрес</label>
+                    <input type="text" class="form-control" id="patientAddress" placeholder="Введите адрес">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="patientInsurance">Страховой полис</label>
+                        <input type="text" class="form-control" id="patientInsurance" placeholder="Введите номер полиса">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="patientGender">Пол</label>
+                        <select class="form-control" id="patientGender">
+                            <option value="">Выберите пол</option>
+                            <option value="male">Мужской</option>
+                            <option value="female">Женский</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="patientNotes">Примечания</label>
+                    <textarea class="form-control" id="patientNotes" rows="3" placeholder="Дополнительная информация"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelPatientBtn">Отмена</button>
+                <button class="btn btn-primary" id="savePatientBtn">
+                    <span id="savePatientBtnText">Сохранить</span>
+                    <div class="loading hidden" id="savePatientLoading"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно подтверждения удаления -->
+    <div id="deletePatientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Удаление пациента</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить пациента <strong id="deletePatientName"></strong>?</p>
+                <p>Это действие нельзя отменить.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelDeleteBtn">Отмена</button>
+                <button class="btn btn-error" id="confirmDeleteBtn">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification" class="notification">
+        <span id="notificationText"></span>
+        <button class="close-notification">&times;</button>
+    </div>
+
+    <script>
+        // Функция для показа уведомлений
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            // Автоматическое скрытие через 5 секунд
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Закрытие уведомления по клику на крестик
+        document.querySelector('.close-notification').addEventListener('click', function() {
+            document.getElementById('notification').classList.remove('show');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверка авторизации
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Получение данных пациентов из localStorage или установка начальных данных
+            let patients = JSON.parse(localStorage.getItem('patients')) || [
+                { 
+                    id: 1, 
+                    name: "Иванов Иван Иванович", 
+                    birthdate: "1985-05-15", 
+                    phone: "+7 (912) 345-67-89", 
+                    email: "ivanov@example.com",
+                    address: "ул. Ленина, 15, кв. 42", 
+                    insurance: "1234567890123456",
+                    gender: "male",
+                    status: "active",
+                    registrationDate: "2020-03-10",
+                    notes: "Аллергия на пенициллин"
+                },
+                { 
+                    id: 2, 
+                    name: "Петрова Анна Сергеевна", 
+                    birthdate: "1990-12-03", 
+                    phone: "+7 (912) 987-65-43", 
+                    email: "petrova@example.com",
+                    address: "ул. Мира, 42, кв. 17", 
+                    insurance: "6543210987654321",
+                    gender: "female",
+                    status: "active",
+                    registrationDate: "2021-07-22",
+                    notes: "Хроническое заболевание: гипертония"
+                },
+                { 
+                    id: 3, 
+                    name: "Сидоров Алексей Петрович", 
+                    birthdate: "1978-08-22", 
+                    phone: "+7 (912) 111-22-33", 
+                    email: "sidorov@example.com",
+                    address: "пр. Победы, 7, кв. 89", 
+                    insurance: "1111222233334444",
+                    gender: "male",
+                    status: "active",
+                    registrationDate: "2019-11-05",
+                    notes: "Перенес операцию в 2018 году"
+                },
+                { 
+                    id: 4, 
+                    name: "Козлова Мария Владимировна", 
+                    birthdate: "1982-04-18", 
+                    phone: "+7 (912) 555-66-77", 
+                    email: "kozlova@example.com",
+                    address: "ул. Садовая, 25, кв. 31", 
+                    insurance: "5555666677778888",
+                    gender: "female",
+                    status: "new",
+                    registrationDate: "2023-01-15",
+                    notes: ""
+                },
+                { 
+                    id: 5, 
+                    name: "Николаев Дмитрий Олегович", 
+                    birthdate: "1975-11-30", 
+                    phone: "+7 (912) 999-00-11", 
+                    email: "nikolaev@example.com",
+                    address: "ул. Центральная, 3, кв. 12", 
+                    insurance: "9999000011112222",
+                    gender: "male",
+                    status: "inactive",
+                    registrationDate: "2018-09-14",
+                    notes: "Переехал в другой город"
+                }
+            ];
+
+            // DOM элементы
+            const patientList = document.getElementById('patientList');
+            const addPatientBtn = document.getElementById('addPatientBtn');
+            const addPatientModal = document.getElementById('addPatientModal');
+            const cancelPatientBtn = document.getElementById('cancelPatientBtn');
+            const savePatientBtn = document.getElementById('savePatientBtn');
+            const savePatientBtnText = document.getElementById('savePatientBtnText');
+            const savePatientLoading = document.getElementById('savePatientLoading');
+            const closeBtns = document.querySelectorAll('.close-btn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const currentDateElement = document.getElementById('currentDate');
+            const dateSelector = document.getElementById('dateSelector');
+            const patientSearch = document.getElementById('patientSearch');
+            const searchBtn = document.getElementById('searchBtn');
+            const statusFilter = document.getElementById('statusFilter');
+            const ageFilter = document.getElementById('ageFilter');
+            const sortBy = document.getElementById('sortBy');
+            const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+            const userRole = document.getElementById('userRole');
+            const deletePatientModal = document.getElementById('deletePatientModal');
+            const deletePatientName = document.getElementById('deletePatientName');
+            const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+            let patientToDelete = null;
+            let currentPage = 1;
+            const patientsPerPage = 5;
+
+            // Установка текущей даты
+            function setCurrentDate() {
+                const now = new Date();
+                const formattedDate = now.toLocaleDateString('ru-RU');
+                currentDateElement.textContent = formattedDate;
+                
+                // Установка даты в селекторе даты
+                const yyyy = now.getFullYear();
+                const mm = String(now.getMonth() + 1).padStart(2, '0');
+                const dd = String(now.getDate()).padStart(2, '0');
+                dateSelector.value = `${yyyy}-${mm}-${dd}`;
+            }
+
+            // Загрузка данных пользователя
+            function loadUserData() {
+                const savedName = localStorage.getItem('userName');
+                const savedRole = localStorage.getItem('userRole');
+                
+                if (savedName) {
+                    userName.textContent = savedName;
+                    // Создаем инициалы для аватара
+                    const initials = savedName.split(' ').map(n => n[0]).join('');
+                    userAvatar.textContent = initials;
+                }
+                
+                if (savedRole) {
+                    userRole.textContent = savedRole;
+                }
+            }
+
+            // Сохранение пациентов в localStorage
+            function savePatientsToStorage() {
+                localStorage.setItem('patients', JSON.stringify(patients));
+            }
+
+            // Расчет возраста
+            function calculateAge(birthdate) {
+                const today = new Date();
+                const birthDate = new Date(birthdate);
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                
+                return age;
+            }
+
+            // Фильтрация и сортировка пациентов
+            function getFilteredAndSortedPatients() {
+                let filteredPatients = [...patients];
+                
+                // Фильтрация по статусу
+                const statusValue = statusFilter.value;
+                if (statusValue) {
+                    filteredPatients = filteredPatients.filter(patient => patient.status === statusValue);
+                }
+                
+                // Фильтрация по возрасту
+                const ageValue = ageFilter.value;
+                if (ageValue) {
+                    filteredPatients = filteredPatients.filter(patient => {
+                        const age = calculateAge(patient.birthdate);
+                        if (ageValue === 'child') return age <= 17;
+                        if (ageValue === 'adult') return age >= 18 && age <= 64;
+                        if (ageValue === 'senior') return age >= 65;
+                        return true;
+                    });
+                }
+                
+                // Поиск
+                const searchTerm = patientSearch.value.toLowerCase();
+                if (searchTerm) {
+                    filteredPatients = filteredPatients.filter(patient => 
+                        patient.name.toLowerCase().includes(searchTerm) ||
+                        patient.phone.includes(searchTerm) ||
+                        patient.email.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                // Сортировка
+                const sortValue = sortBy.value;
+                if (sortValue === 'name') {
+                    filteredPatients.sort((a, b) => a.name.localeCompare(b.name));
+                } else if (sortValue === 'date') {
+                    filteredPatients.sort((a, b) => new Date(b.registrationDate) - new Date(a.registrationDate));
+                } else if (sortValue === 'age') {
+                    filteredPatients.sort((a, b) => calculateAge(a.birthdate) - calculateAge(b.birthdate));
+                }
+                
+                return filteredPatients;
+            }
+
+            // Рендеринг списка пациентов
+            function renderPatients() {
+                const filteredPatients = getFilteredAndSortedPatients();
+                patientList.innerHTML = '';
+                
+                if (filteredPatients.length === 0) {
+                    patientList.innerHTML = '<div class="text-center" style="padding: 20px;">Пациенты не найдены</div>';
+                    renderPagination(0);
+                    return;
+                }
+                
+                // Пагинация
+                const totalPages = Math.ceil(filteredPatients.length / patientsPerPage);
+                const startIndex = (currentPage - 1) * patientsPerPage;
+                const endIndex = startIndex + patientsPerPage;
+                const patientsToShow = filteredPatients.slice(startIndex, endIndex);
+                
+                patientsToShow.forEach(patient => {
+                    const statusText = getStatusText(patient.status);
+                    const statusClass = `status-${patient.status}`;
+                    
+                    const patientItem = document.createElement('div');
+                    patientItem.className = 'patient-item';
+                    patientItem.innerHTML = `
+                        <div class="patient-info">
+                            <h3>${patient.name}</h3>
+                            <div class="patient-meta">
+                                ${calculateAge(patient.birthdate)} лет | ${patient.phone} | ${patient.email}
+                            </div>
+                            <div class="status-badge ${statusClass}" style="margin-top: 5px;">${statusText}</div>
+                        </div>
+                        <div class="patient-actions">
+                            <button class="btn btn-sm btn-outline" onclick="viewPatient(${patient.id})">Просмотр</button>
+                            <button class="btn btn-sm btn-outline" onclick="editPatient(${patient.id})">Редактировать</button>
+                            <button class="btn btn-sm btn-error" onclick="deletePatient(${patient.id})">Удалить</button>
+                        </div>
+                    `;
+                    patientList.appendChild(patientItem);
+                });
+                
+                renderPagination(filteredPatients.length);
+            }
+
+            // Получение текста статуса
+            function getStatusText(status) {
+                switch(status) {
+                    case 'active': return 'Активный';
+                    case 'inactive': return 'Неактивный';
+                    case 'new': return 'Новый';
+                    default: return status;
+                }
+            }
+
+            // Рендеринг пагинации
+            function renderPagination(totalPatients) {
+                const totalPages = Math.ceil(totalPatients / patientsPerPage);
+                const pagination = document.getElementById('pagination');
+                pagination.innerHTML = '';
+                
+                if (totalPages <= 1) return;
+                
+                // Кнопка "Назад"
+                const prevButton = document.createElement('button');
+                prevButton.textContent = '‹';
+                prevButton.disabled = currentPage === 1;
+                prevButton.addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        renderPatients();
+                    }
+                });
+                pagination.appendChild(prevButton);
+                
+                // Номера страниц
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageButton = document.createElement('button');
+                    pageButton.textContent = i;
+                    pageButton.className = i === currentPage ? 'active' : '';
+                    pageButton.addEventListener('click', () => {
+                        currentPage = i;
+                        renderPatients();
+                    });
+                    pagination.appendChild(pageButton);
+                }
+                
+                // Кнопка "Вперед"
+                const nextButton = document.createElement('button');
+                nextButton.textContent = '›';
+                nextButton.disabled = currentPage === totalPages;
+                nextButton.addEventListener('click', () => {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        renderPatients();
+                    }
+                });
+                pagination.appendChild(nextButton);
+            }
+
+            // Сброс фильтров
+            function resetFilters() {
+                statusFilter.value = '';
+                ageFilter.value = '';
+                sortBy.value = 'name';
+                patientSearch.value = '';
+                currentPage = 1;
+                renderPatients();
+                showNotification('Фильтры сброшены', 'success');
+            }
+
+            // Обработчики событий
+            addPatientBtn.addEventListener('click', () => {
+                addPatientModal.classList.add('active');
+            });
+
+            cancelPatientBtn.addEventListener('click', () => {
+                addPatientModal.classList.remove('active');
+                // Очистка формы
+                document.getElementById('patientName').value = '';
+                document.getElementById('patientBirthdate').value = '';
+                document.getElementById('patientPhone').value = '';
+                document.getElementById('patientEmail').value = '';
+                document.getElementById('patientAddress').value = '';
+                document.getElementById('patientInsurance').value = '';
+                document.getElementById('patientGender').value = '';
+                document.getElementById('patientNotes').value = '';
+            });
+
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const modal = e.target.closest('.modal');
+                    modal.classList.remove('active');
+                });
+            });
+
+            savePatientBtn.addEventListener('click', () => {
+                // Получение данных из формы
+                const name = document.getElementById('patientName').value;
+                const birthdate = document.getElementById('patientBirthdate').value;
+                const phone = document.getElementById('patientPhone').value;
+                const email = document.getElementById('patientEmail').value;
+                const address = document.getElementById('patientAddress').value;
+                const insurance = document.getElementById('patientInsurance').value;
+                const gender = document.getElementById('patientGender').value;
+                const notes = document.getElementById('patientNotes').value;
+                
+                // Простая валидация
+                if (!name || !birthdate || !phone) {
+                    showNotification('Пожалуйста, заполните обязательные поля: ФИО, дата рождения и телефон', 'error');
+                    return;
+                }
+                
+                // Показать индикатор загрузки
+                savePatientBtnText.classList.add('hidden');
+                savePatientLoading.classList.remove('hidden');
+                savePatientBtn.disabled = true;
+                
+                // Имитация сохранения
+                setTimeout(() => {
+                    // Добавление нового пациента
+                    const newPatient = {
+                        id: patients.length > 0 ? Math.max(...patients.map(p => p.id)) + 1 : 1,
+                        name,
+                        birthdate,
+                        phone,
+                        email,
+                        address,
+                        insurance,
+                        gender,
+                        notes,
+                        status: "new",
+                        registrationDate: new Date().toISOString().split('T')[0]
+                    };
+                    
+                    patients.push(newPatient);
+                    savePatientsToStorage();
+                    renderPatients();
+                    addPatientModal.classList.remove('active');
+                    
+                    // Скрыть индикатор загрузки
+                    savePatientBtnText.classList.remove('hidden');
+                    savePatientLoading.classList.add('hidden');
+                    savePatientBtn.disabled = false;
+                    
+                    // Очистка формы
+                    document.getElementById('patientName').value = '';
+                    document.getElementById('patientBirthdate').value = '';
+                    document.getElementById('patientPhone').value = '';
+                    document.getElementById('patientEmail').value = '';
+                    document.getElementById('patientAddress').value = '';
+                    document.getElementById('patientInsurance').value = '';
+                    document.getElementById('patientGender').value = '';
+                    document.getElementById('patientNotes').value = '';
+                    
+                    showNotification('Пациент успешно добавлен!', 'success');
+                }, 1000);
+            });
+
+            searchBtn.addEventListener('click', () => {
+                currentPage = 1;
+                renderPatients();
+            });
+
+            patientSearch.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    currentPage = 1;
+                    renderPatients();
+                }
+            });
+
+            statusFilter.addEventListener('change', () => {
+                currentPage = 1;
+                renderPatients();
+            });
+
+            ageFilter.addEventListener('change', () => {
+                currentPage = 1;
+                renderPatients();
+            });
+
+            sortBy.addEventListener('change', () => {
+                currentPage = 1;
+                renderPatients();
+            });
+
+            resetFiltersBtn.addEventListener('click', resetFilters);
+
+            // Выход из системы
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userRole');
+                window.location.href = 'index.html';
+            });
+
+            // Подтверждение удаления пациента
+            cancelDeleteBtn.addEventListener('click', () => {
+                deletePatientModal.classList.remove('active');
+                patientToDelete = null;
+            });
+
+            confirmDeleteBtn.addEventListener('click', () => {
+                if (patientToDelete) {
+                    patients = patients.filter(p => p.id !== patientToDelete);
+                    savePatientsToStorage();
+                    renderPatients();
+                    deletePatientModal.classList.remove('active');
+                    patientToDelete = null;
+                    showNotification('Пациент успешно удален', 'success');
+                }
+            });
+
+            // Глобальные функции для кнопок
+            window.viewPatient = function(patientId) {
+                window.location.href = `patient-details.html?id=${patientId}`;
+            };
+
+            window.editPatient = function(patientId) {
+                // В реальном приложении здесь будет открытие формы редактирования
+                showNotification(`Редактирование пациента с ID: ${patientId}`, 'info');
+            };
+
+            window.deletePatient = function(patientId) {
+                const patient = patients.find(p => p.id === patientId);
+                if (patient) {
+                    patientToDelete = patientId;
+                    deletePatientName.textContent = patient.name;
+                    deletePatientModal.classList.add('active');
+                }
+            };
+
+            // Инициализация
+            setCurrentDate();
+            loadUserData();
+            renderPatients();
+        });
+    </script>
+</body>
+</html>

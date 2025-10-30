@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Медицинская система</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Медицинская информационная система</h1>
+            <p>Поликлиника №1</p>
+        </div>
+        
+        <div class="login-form">
+            <h2>Вход в систему</h2>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Введите ваш email">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" placeholder="Введите пароль">
+            </div>
+            
+            <div class="form-options">
+                <label class="checkbox">
+                    <input type="checkbox" id="remember">
+                    <span class="checkmark"></span>
+                    Запомнить меня
+                </label>
+                <a href="#" class="forgot-password" id="forgotPasswordLink">Забыли пароль?</a>
+            </div>
+            
+            <button class="btn btn-primary btn-block" id="loginBtn">
+                <span id="loginBtnText">Войти</span>
+                <div class="loading hidden" id="loginLoading"></div>
+            </button>
+            
+            <div class="divider">
+                <span>или войдите с помощью</span>
+            </div>
+            
+            <div class="social-login">
+                <button class="social-btn google">
+                    <span class="social-icon">G</span>
+                    Google
+                </button>
+                <button class="social-btn facebook">
+                    <span class="social-icon">f</span>
+                    Facebook
+                </button>
+                <button class="social-btn vk">
+                    <span class="social-icon">VK</span>
+                    ВКонтакте
+                </button>
+            </div>
+            
+            <div class="register-link">
+                Нет аккаунта? <a href="#" id="registerLink">Зарегистрироваться</a>
+            </div>
+        </div>
+        
+        <div class="login-footer">
+            <p>&copy; 2023 Медицинская информационная система. Поликлиника №1</p>
+        </div>
+    </div>
+
+    <!-- Модальное окно регистрации -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Регистрация</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="regName">ФИО</label>
+                    <input type="text" id="regName" placeholder="Введите ваше полное имя">
+                </div>
+                
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" placeholder="Введите ваш email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="regPassword">Пароль</label>
+                    <input type="password" id="regPassword" placeholder="Придумайте пароль">
+                </div>
+                
+                <div class="form-group">
+                    <label for="regConfirmPassword">Подтверждение пароля</label>
+                    <input type="password" id="regConfirmPassword" placeholder="Повторите пароль">
+                </div>
+                
+                <div class="form-group">
+                    <label for="regRole">Роль в системе</label>
+                    <select id="regRole">
+                        <option value="">Выберите роль</option>
+                        <option value="doctor">Врач</option>
+                        <option value="nurse">Медсестра</option>
+                        <option value="admin">Администратор</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox">
+                        <input type="checkbox" id="agreeTerms">
+                        <span class="checkmark"></span>
+                        Я согласен с <a href="#">условиями использования</a>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelRegBtn">Отмена</button>
+                <button class="btn btn-primary" id="confirmRegBtn">
+                    <span id="confirmRegBtnText">Зарегистрироваться</span>
+                    <div class="loading hidden" id="regLoading"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно восстановления пароля -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Восстановление пароля</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="resetEmail">Email</label>
+                    <input type="email" id="resetEmail" placeholder="Введите ваш email">
+                </div>
+                <p style="font-size: 0.9rem; color: var(--text-gray); margin-top: 10px;">
+                    На указанный email будет отправлена ссылка для восстановления пароля.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelResetBtn">Отмена</button>
+                <button class="btn btn-primary" id="confirmResetBtn">
+                    <span id="confirmResetBtnText">Отправить</span>
+                    <div class="loading hidden" id="resetLoading"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification" class="notification">
+        <span id="notificationText"></span>
+        <button class="close-notification">&times;</button>
+    </div>
+
+    <script>
+        // Функция для показа уведомлений
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            // Автоматическое скрытие через 5 секунд
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Закрытие уведомления по клику на крестик
+        document.querySelector('.close-notification').addEventListener('click', function() {
+            document.getElementById('notification').classList.remove('show');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Элементы DOM
+            const loginBtn = document.getElementById('loginBtn');
+            const loginBtnText = document.getElementById('loginBtnText');
+            const loginLoading = document.getElementById('loginLoading');
+            const registerLink = document.getElementById('registerLink');
+            const registerModal = document.getElementById('registerModal');
+            const cancelRegBtn = document.getElementById('cancelRegBtn');
+            const confirmRegBtn = document.getElementById('confirmRegBtn');
+            const confirmRegBtnText = document.getElementById('confirmRegBtnText');
+            const regLoading = document.getElementById('regLoading');
+            const closeBtns = document.querySelectorAll('.close-btn');
+            const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+            const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+            const cancelResetBtn = document.getElementById('cancelResetBtn');
+            const confirmResetBtn = document.getElementById('confirmResetBtn');
+            const confirmResetBtnText = document.getElementById('confirmResetBtnText');
+            const resetLoading = document.getElementById('resetLoading');
+            
+            // Обработчик входа
+            loginBtn.addEventListener('click', function() {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                if (!email || !password) {
+                    showNotification('Пожалуйста, заполните все поля', 'error');
+                    return;
+                }
+                
+                // Показать индикатор загрузки
+                loginBtnText.classList.add('hidden');
+                loginLoading.classList.remove('hidden');
+                loginBtn.disabled = true;
+                
+                // Имитация запроса к серверу
+                setTimeout(() => {
+                    // Сохраняем информацию о входе в localStorage
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('userName', 'Иван Иванов');
+                    localStorage.setItem('userRole', 'admin');
+                    
+                    // Скрыть индикатор загрузки
+                    loginBtnText.classList.remove('hidden');
+                    loginLoading.classList.add('hidden');
+                    loginBtn.disabled = false;
+                    
+                    showNotification('Вход выполнен успешно!');
+                    
+                    // Перенаправляем на главную страницу
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                }, 1500);
+            });
+            
+            // Открытие модального окна регистрации
+            registerLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                registerModal.classList.add('active');
+            });
+            
+            // Закрытие модального окна регистрации
+            cancelRegBtn.addEventListener('click', function() {
+                registerModal.classList.remove('active');
+            });
+            
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const modal = e.target.closest('.modal');
+                    modal.classList.remove('active');
+                });
+            });
+            
+            // Обработчик регистрации
+            confirmRegBtn.addEventListener('click', function() {
+                const name = document.getElementById('regName').value;
+                const email = document.getElementById('regEmail').value;
+                const password = document.getElementById('regPassword').value;
+                const confirmPassword = document.getElementById('regConfirmPassword').value;
+                const role = document.getElementById('regRole').value;
+                const agreeTerms = document.getElementById('agreeTerms').checked;
+                
+                if (!name || !email || !password || !confirmPassword || !role) {
+                    showNotification('Пожалуйста, заполните все поля', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showNotification('Пароли не совпадают', 'error');
+                    return;
+                }
+                
+                if (!agreeTerms) {
+                    showNotification('Необходимо согласиться с условиями использования', 'error');
+                    return;
+                }
+                
+                // Показать индикатор загрузки
+                confirmRegBtnText.classList.add('hidden');
+                regLoading.classList.remove('hidden');
+                confirmRegBtn.disabled = true;
+                
+                // Имитация запроса к серверу
+                setTimeout(() => {
+                    // Скрыть индикатор загрузки
+                    confirmRegBtnText.classList.remove('hidden');
+                    regLoading.classList.add('hidden');
+                    confirmRegBtn.disabled = false;
+                    
+                    showNotification('Регистрация прошла успешно! Теперь вы можете войти в систему.');
+                    registerModal.classList.remove('active');
+                    
+                    // Очистка формы
+                    document.getElementById('regName').value = '';
+                    document.getElementById('regEmail').value = '';
+                    document.getElementById('regPassword').value = '';
+                    document.getElementById('regConfirmPassword').value = '';
+                    document.getElementById('regRole').value = '';
+                    document.getElementById('agreeTerms').checked = false;
+                }, 1500);
+            });
+            
+            // Открытие модального окна восстановления пароля
+            forgotPasswordLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                forgotPasswordModal.classList.add('active');
+            });
+            
+            // Закрытие модального окна восстановления пароля
+            cancelResetBtn.addEventListener('click', function() {
+                forgotPasswordModal.classList.remove('active');
+            });
+            
+            // Обработчик восстановления пароля
+            confirmResetBtn.addEventListener('click', function() {
+                const email = document.getElementById('resetEmail').value;
+                
+                if (!email) {
+                    showNotification('Пожалуйста, введите email', 'error');
+                    return;
+                }
+                
+                // Показать индикатор загрузки
+                confirmResetBtnText.classList.add('hidden');
+                resetLoading.classList.remove('hidden');
+                confirmResetBtn.disabled = true;
+                
+                // Имитация запроса к серверу
+                setTimeout(() => {
+                    // Скрыть индикатор загрузки
+                    confirmResetBtnText.classList.remove('hidden');
+                    resetLoading.classList.add('hidden');
+                    confirmResetBtn.disabled = false;
+                    
+                    showNotification('Ссылка для восстановления пароля отправлена на ваш email');
+                    forgotPasswordModal.classList.remove('active');
+                    
+                    // Очистка формы
+                    document.getElementById('resetEmail').value = '';
+                }, 1500);
+            });
+            
+            // Проверка авторизации при загрузке страницы
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

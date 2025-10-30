@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отчеты - Медицинская система</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Боковая панель навигации -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>МедСистема</h2>
+                <p>Поликлиника №1</p>
+            </div>
+            <div class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i>📊</i> <span class="nav-text">Главная</span>
+                </a>
+                <a href="patients.html" class="nav-item">
+                    <i>👥</i> <span class="nav-text">Пациенты</span>
+                </a>
+                <a href="staff.html" class="nav-item">
+                    <i>👨‍⚕️</i> <span class="nav-text">Персонал</span>
+                </a>
+                <a href="schedule.html" class="nav-item">
+                    <i>📅</i> <span class="nav-text">Расписание</span>
+                </a>
+                <a href="reports.html" class="nav-item active">
+                    <i>📈</i> <span class="nav-text">Отчёты</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i>⚙️</i> <span class="nav-text">Настройки</span>
+                </a>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">ИИ</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Иван Иванов</div>
+                        <div class="user-role" id="userRole">Администратор</div>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i>🚪</i> <span>Выйти</span>
+                </button>
+                <div class="clinic-name">Поликлиника №1</div>
+                <div id="currentDate">01.01.2023</div>
+            </div>
+        </div>
+
+        <!-- Основное содержимое -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1>Отчеты и аналитика</h1>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="reportsSearch" placeholder="Поиск отчетов...">
+                    <button class="btn btn-primary" id="searchBtn">Найти</button>
+                </div>
+            </div>
+            <div class="content-body">
+                <div class="page-title">
+                    <h1>Аналитика и отчеты</h1>
+                    <button class="btn btn-accent" id="generateReportBtn">Создать отчет</button>
+                </div>
+
+                <!-- Фильтры для отчетов -->
+                <div class="report-filters">
+                    <h3>Параметры отчета</h3>
+                    <div class="filters">
+                        <div class="filter-group">
+                            <div class="filter-label">Тип отчета</div>
+                            <select class="form-control" id="reportType">
+                                <option value="patient">По пациентам</option>
+                                <option value="staff">По персоналу</option>
+                                <option value="financial">Финансовый</option>
+                                <option value="appointments">По приемам</option>
+                                <option value="procedures">По процедурам</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <div class="filter-label">Период</div>
+                            <select class="form-control" id="reportPeriod">
+                                <option value="week">За неделю</option>
+                                <option value="month" selected>За месяц</option>
+                                <option value="quarter">За квартал</option>
+                                <option value="year">За год</option>
+                                <option value="custom">Произвольный период</option>
+                            </select>
+                        </div>
+                        <div class="filter-group" id="customDateRange" style="display: none;">
+                            <div class="filter-label">Произвольный период</div>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="date" class="form-control" id="startDate">
+                                <input type="date" class="form-control" id="endDate">
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <div class="filter-label">&nbsp;</div>
+                            <button class="btn btn-primary" id="applyFiltersBtn">Применить</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Статистика -->
+                <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <h3>Всего пациентов</h3>
+                        <div class="value">1,247</div>
+                        <div class="trend up">+12 за месяц</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Новых пациентов</h3>
+                        <div class="value">34</div>
+                        <div class="trend up">+5 за месяц</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Завершенных приемов</h3>
+                        <div class="value">892</div>
+                        <div class="trend up">+42 за месяц</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Средняя загрузка</h3>
+                        <div class="value">78%</div>
+                        <div class="trend up">+5% за месяц</div>
+                    </div>
+                </div>
+
+                <!-- Графики -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <div class="chart-container">
+                        <h3>Распределение пациентов по возрасту</h3>
+                        <div class="chart-placeholder">
+                            График распределения пациентов по возрасту
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Статистика приемов по врачам</h3>
+                        <div class="chart-placeholder">
+                            График статистики приемов по врачам
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <div class="chart-container">
+                        <h3>Динамика новых пациентов</h3>
+                        <div class="chart-placeholder">
+                            График динамики новых пациентов
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Распределение по специальностям</h3>
+                        <div class="chart-placeholder">
+                            График распределения по специальностям
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Список отчетов -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>История отчетов</h3>
+                        <button class="btn btn-sm btn-outline" id="exportAllBtn">Экспортировать все</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table id="reportsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Название</th>
+                                        <th>Тип</th>
+                                        <th>Период</th>
+                                        <th>Дата создания</th>
+                                        <th>Автор</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Отчет по пациентам за январь 2023</td>
+                                        <td>По пациентам</td>
+                                        <td>01.01.2023 - 31.01.2023</td>
+                                        <td>01.02.2023</td>
+                                        <td>Иванов И.И.</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            <button class="btn btn-sm btn-outline">Экспорт</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Финансовый отчет за 4 квартал 2022</td>
+                                        <td>Финансовый</td>
+                                        <td>01.10.2022 - 31.12.2022</td>
+                                        <td>15.01.2023</td>
+                                        <td>Петрова А.С.</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            <button class="btn btn-sm btn-outline">Экспорт</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Статистика приемов за декабрь 2022</td>
+                                        <td>По приемам</td>
+                                        <td>01.12.2022 - 31.12.2022</td>
+                                        <td>05.01.2023</td>
+                                        <td>Сидоров А.П.</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            <button class="btn btn-sm btn-outline">Экспорт</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Анализ работы персонала за 2022 год</td>
+                                        <td>По персоналу</td>
+                                        <td>01.01.2022 - 31.12.2022</td>
+                                        <td>20.01.2023</td>
+                                        <td>Иванов И.И.</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline">Просмотр</button>
+                                            <button class="btn btn-sm btn-outline">Экспорт</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно создания отчета -->
+    <div id="generateReportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Создание отчета</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="reportName">Название отчета</label>
+                    <input type="text" class="form-control" id="reportName" placeholder="Введите название отчета">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="reportTypeModal">Тип отчета</label>
+                    <select class="form-control" id="reportTypeModal">
+                        <option value="patient">По пациентам</option>
+                        <option value="staff">По персоналу</option>
+                        <option value="financial">Финансовый</option>
+                        <option value="appointments">По приемам</option>
+                        <option value="procedures">По процедурам</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="reportPeriodModal">Период</label>
+                    <select class="form-control" id="reportPeriodModal">
+                        <option value="week">За неделю</option>
+                        <option value="month" selected>За месяц</option>
+                        <option value="quarter">За квартал</option>
+                        <option value="year">За год</option>
+                        <option value="custom">Произвольный период</option>
+                    </select>
+                </div>
+                <div class="form-group" id="customDateRangeModal" style="display: none;">
+                    <label class="form-label">Произвольный период</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="date" class="form-control" id="startDateModal">
+                        <input type="date" class="form-control" id="endDateModal">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="reportFormat">Формат</label>
+                    <select class="form-control" id="reportFormat">
+                        <option value="pdf">PDF</option>
+                        <option value="excel">Excel</option>
+                        <option value="html">HTML</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="reportDescription">Описание</label>
+                    <textarea class="form-control" id="reportDescription" rows="3" placeholder="Дополнительная информация"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelReportBtn">Отмена</button>
+                <button class="btn btn-primary" id="saveReportBtn">
+                    <span id="saveReportBtnText">Создать отчет</span>
+                    <div class="loading hidden" id="saveReportLoading"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification" class="notification">
+        <span id="notificationText"></span>
+        <button class="close-notification">&times;</button>
+    </div>
+
+    <script>
+        // Функция для показа уведомлений
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            // Автоматическое скрытие через 5 секунд
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Закрытие уведомления по клику на крестик
+        document.querySelector('.close-notification').addEventListener('click', function() {
+            document.getElementById('notification').classList.remove('show');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверка авторизации
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // DOM элементы
+            const logoutBtn = document.getElementById('logoutBtn');
+            const currentDateElement = document.getElementById('currentDate');
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+            const userRole = document.getElementById('userRole');
+            const generateReportBtn = document.getElementById('generateReportBtn');
+            const generateReportModal = document.getElementById('generateReportModal');
+            const cancelReportBtn = document.getElementById('cancelReportBtn');
+            const saveReportBtn = document.getElementById('saveReportBtn');
+            const saveReportBtnText = document.getElementById('saveReportBtnText');
+            const saveReportLoading = document.getElementById('saveReportLoading');
+            const closeBtns = document.querySelectorAll('.close-btn');
+            const reportPeriod = document.getElementById('reportPeriod');
+            const customDateRange = document.getElementById('customDateRange');
+            const applyFiltersBtn = document.getElementById('applyFiltersBtn');
+            const exportAllBtn = document.getElementById('exportAllBtn');
+            const reportPeriodModal = document.getElementById('reportPeriodModal');
+            const customDateRangeModal = document.getElementById('customDateRangeModal');
+
+            // Установка текущей даты
+            function setCurrentDate() {
+                const now = new Date();
+                const formattedDate = now.toLocaleDateString('ru-RU');
+                currentDateElement.textContent = formattedDate;
+            }
+
+            // Загрузка данных пользователя
+            function loadUserData() {
+                const savedName = localStorage.getItem('userName');
+                const savedRole = localStorage.getItem('userRole');
+                
+                if (savedName) {
+                    userName.textContent = savedName;
+                    // Создаем инициалы для аватара
+                    const initials = savedName.split(' ').map(n => n[0]).join('');
+                    userAvatar.textContent = initials;
+                }
+                
+                if (savedRole) {
+                    userRole.textContent = savedRole;
+                }
+            }
+
+            // Показать/скрыть поле произвольного периода
+            function toggleCustomDateRange(selectElement, container) {
+                if (selectElement.value === 'custom') {
+                    container.style.display = 'block';
+                } else {
+                    container.style.display = 'none';
+                }
+            }
+
+            // Обработчики событий
+            generateReportBtn.addEventListener('click', () => {
+                generateReportModal.classList.add('active');
+            });
+
+            cancelReportBtn.addEventListener('click', () => {
+                generateReportModal.classList.remove('active');
+                // Очистка формы
+                document.getElementById('reportName').value = '';
+                document.getElementById('reportTypeModal').value = 'patient';
+                document.getElementById('reportPeriodModal').value = 'month';
+                document.getElementById('reportFormat').value = 'pdf';
+                document.getElementById('reportDescription').value = '';
+                customDateRangeModal.style.display = 'none';
+            });
+
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const modal = e.target.closest('.modal');
+                    modal.classList.remove('active');
+                });
+            });
+
+            saveReportBtn.addEventListener('click', () => {
+                // Получение данных из формы
+                const name = document.getElementById('reportName').value;
+                const type = document.getElementById('reportTypeModal').value;
+                const period = document.getElementById('reportPeriodModal').value;
+                const format = document.getElementById('reportFormat').value;
+                const description = document.getElementById('reportDescription').value;
+                
+                // Простая валидация
+                if (!name) {
+                    showNotification('Пожалуйста, введите название отчета', 'error');
+                    return;
+                }
+                
+                // Показать индикатор загрузки
+                saveReportBtnText.classList.add('hidden');
+                saveReportLoading.classList.remove('hidden');
+                saveReportBtn.disabled = true;
+                
+                // Имитация создания отчета
+                setTimeout(() => {
+                    // Скрыть индикатор загрузки
+                    saveReportBtnText.classList.remove('hidden');
+                    saveReportLoading.classList.add('hidden');
+                    saveReportBtn.disabled = false;
+                    
+                    generateReportModal.classList.remove('active');
+                    
+                    // Очистка формы
+                    document.getElementById('reportName').value = '';
+                    document.getElementById('reportTypeModal').value = 'patient';
+                    document.getElementById('reportPeriodModal').value = 'month';
+                    document.getElementById('reportFormat').value = 'pdf';
+                    document.getElementById('reportDescription').value = '';
+                    customDateRangeModal.style.display = 'none';
+                    
+                    showNotification('Отчет успешно создан!', 'success');
+                }, 2000);
+            });
+
+            // Обработчики изменения периода
+            reportPeriod.addEventListener('change', function() {
+                toggleCustomDateRange(this, customDateRange);
+            });
+
+            reportPeriodModal.addEventListener('change', function() {
+                toggleCustomDateRange(this, customDateRangeModal);
+            });
+
+            applyFiltersBtn.addEventListener('click', () => {
+                showNotification('Фильтры применены', 'success');
+            });
+
+            exportAllBtn.addEventListener('click', () => {
+                showNotification('Все отчеты экспортированы', 'success');
+            });
+
+            // Выход из системы
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userRole');
+                window.location.href = 'index.html';
+            });
+
+            // Инициализация
+            setCurrentDate();
+            loadUserData();
+        });
+    </script>
+</body>
+</html>

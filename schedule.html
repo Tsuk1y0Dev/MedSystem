@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расписание - Медицинская система</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Боковая панель навигации -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>МедСистема</h2>
+                <p>Поликлиника №1</p>
+            </div>
+            <div class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i>📊</i> <span class="nav-text">Главная</span>
+                </a>
+                <a href="patients.html" class="nav-item">
+                    <i>👥</i> <span class="nav-text">Пациенты</span>
+                </a>
+                <a href="staff.html" class="nav-item">
+                    <i>👨‍⚕️</i> <span class="nav-text">Персонал</span>
+                </a>
+                <a href="schedule.html" class="nav-item active">
+                    <i>📅</i> <span class="nav-text">Расписание</span>
+                </a>
+                <a href="reports.html" class="nav-item">
+                    <i>📈</i> <span class="nav-text">Отчёты</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i>⚙️</i> <span class="nav-text">Настройки</span>
+                </a>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">ИИ</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Иван Иванов</div>
+                        <div class="user-role" id="userRole">Администратор</div>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i>🚪</i> <span>Выйти</span>
+                </button>
+                <div class="clinic-name">Поликлиника №1</div>
+                <div id="currentDate">01.01.2023</div>
+            </div>
+        </div>
+
+        <!-- Основное содержимое -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1>Расписание приёмов</h1>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="scheduleSearch" placeholder="Поиск...">
+                    <button class="btn btn-primary" id="searchBtn">Найти</button>
+                </div>
+            </div>
+            <div class="content-body">
+                <div class="page-title">
+                    <h1>Календарь приёмов</h1>
+                    <button class="btn btn-accent" id="addAppointmentBtn">Добавить приём</button>
+                </div>
+
+                <!-- Фильтры -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <div class="filter-label">Врач</div>
+                        <select class="form-control" id="doctorFilter">
+                            <option value="">Все врачи</option>
+                            <option value="1">Смирнова О.В.</option>
+                            <option value="2">Кузнецов Д.А.</option>
+                            <option value="3">Васильева Е.И.</option>
+                            <option value="4">Попов А.С.</option>
+                            <option value="5">Федорова М.Д.</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-label">Тип приёма</div>
+                        <select class="form-control" id="typeFilter">
+                            <option value="">Все типы</option>
+                            <option value="consultation">Консультация</option>
+                            <option value="examination">Осмотр</option>
+                            <option value="procedure">Процедура</option>
+                            <option value="surgery">Операция</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-label">Статус</div>
+                        <select class="form-control" id="statusFilter">
+                            <option value="">Все статусы</option>
+                            <option value="scheduled">Запланирован</option>
+                            <option value="confirmed">Подтверждён</option>
+                            <option value="completed">Завершён</option>
+                            <option value="cancelled">Отменён</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-label">&nbsp;</div>
+                        <button class="btn btn-outline" id="resetFiltersBtn">Сбросить фильтры</button>
+                    </div>
+                </div>
+
+                <!-- Календарь -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Календарь</h3>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <button class="btn btn-sm btn-outline" id="prevMonthBtn">‹</button>
+                            <span id="currentMonth">Февраль 2023</span>
+                            <button class="btn btn-sm btn-outline" id="nextMonthBtn">›</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="calendar">
+                            <div class="calendar-grid" id="calendarGrid">
+                                <!-- Календарь будет заполнен через JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Список приёмов -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Приёмы на <span id="selectedDateText">сегодня</span></h3>
+                        <button class="btn btn-sm btn-outline" id="viewAllAppointmentsBtn">Все приёмы</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table id="appointmentsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Время</th>
+                                        <th>Пациент</th>
+                                        <th>Врач</th>
+                                        <th>Тип приёма</th>
+                                        <th>Статус</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Таблица будет заполнена через JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления приёма -->
+    <div id="addAppointmentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Добавить приём</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="appointmentPatient">Пациент</label>
+                        <select class="form-control" id="appointmentPatient">
+                            <option value="">Выберите пациента</option>
+                            <option value="1">Иванов Иван Иванович</option>
+                            <option value="2">Петрова Анна Сергеевна</option>
+                            <option value="3">Сидоров Алексей Петрович</option>
+                            <option value="4">Козлова Мария Владимировна</option>
+                            <option value="5">Николаев Дмитрий Олегович</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="appointmentDoctor">Врач</label>
+                        <select class="form-control" id="appointmentDoctor">
+                            <option value="">Выберите врача</option>
+                            <option value="1">Смирнова Ольга Владимировна</option>
+                            <option value="2">Кузнецов Дмитрий Александрович</option>
+                            <option value="3">Васильева Екатерина Игоревна</option>
+                            <option value="4">Попов Андрей Сергеевич</option>
+                            <option value="5">Федорова Мария Дмитриевна</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="appointmentDate">Дата</label>
+                        <input type="date" class="form-control" id="appointmentDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="appointmentTime">Время</label>
+                        <input type="time" class="form-control" id="appointmentTime">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="appointmentType">Тип приёма</label>
+                    <select class="form-control" id="appointmentType">
+                        <option value="">Выберите тип приёма</option>
+                        <option value="consultation">Консультация</option>
+                        <option value="examination">Осмотр</option>
+                        <option value="procedure">Процедура</option>
+                        <option value="surgery">Операция</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="appointmentNotes">Примечания</label>
+                    <textarea class="form-control" id="appointmentNotes" rows="3" placeholder="Дополнительная информация"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelAppointmentBtn">Отмена</button>
+                <button class="btn btn-primary" id="saveAppointmentBtn">
+                    <span id="saveAppointmentBtnText">Сохранить</span>
+                    <div class="loading hidden" id="saveAppointmentLoading"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification" class="notification">
+        <span id="notificationText"></span>
+        <button class="close-notification">&times;</button>
+    </div>
+
+    <script>
+        // Функция для показа уведомлений
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            // Автоматическое скрытие через 5 секунд
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Закрытие уведомления по клику на крестик
+        document.querySelector('.close-notification').addEventListener('click', function() {
+            document.getElementById('notification').classList.remove('show');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверка авторизации
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Данные для расписания
+            const appointments = [
+                { id: 1, patientId: 1, doctorId: 1, date: "2023-02-20", time: "11:00", type: "consultation", status: "scheduled", notes: "Повторный приём" },
+                { id: 2, patientId: 2, doctorId: 1, date: "2023-02-20", time: "14:30", type: "consultation", status: "scheduled", notes: "Консультация" },
+                { id: 3, patientId: 3, doctorId: 4, date: "2023-02-21", time: "10:00", type: "examination", status: "confirmed", notes: "Диагностика" },
+                { id: 4, patientId: 4, doctorId: 3, date: "2023-02-21", time: "16:15", type: "examination", status: "scheduled", notes: "Профилактический осмотр" },
+                { id: 5, patientId: 5, doctorId: 2, date: "2023-02-22", time: "09:30", type: "procedure", status: "scheduled", notes: "Перевязка" }
+            ];
+
+            const patients = [
+                { id: 1, name: "Иванов Иван Иванович" },
+                { id: 2, name: "Петрова Анна Сергеевна" },
+                { id: 3, name: "Сидоров Алексей Петрович" },
+                { id: 4, name: "Козлова Мария Владимировна" },
+                { id: 5, name: "Николаев Дмитрий Олегович" }
+            ];
+
+            const doctors = [
+                { id: 1, name: "Смирнова Ольга Владимировна" },
+                { id: 2, name: "Кузнецов Дмитрий Александрович" },
+                { id: 3, name: "Васильева Екатерина Игоревна" },
+                { id: 4, name: "Попов Андрей Сергеевич" },
+                { id: 5, name: "Федорова Мария Дмитриевна" }
+            ];
+
+            // DOM элементы
+            const logoutBtn = document.getElementById('logoutBtn');
+            const currentDateElement = document.getElementById('currentDate');
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+            const userRole = document.getElementById('userRole');
+            const addAppointmentBtn = document.getElementById('addAppointmentBtn');
+            const addAppointmentModal = document.getElementById('addAppointmentModal');
+            const cancelAppointmentBtn = document.getElementById('cancelAppointmentBtn');
+            const saveAppointmentBtn = document.getElementById('saveAppointmentBtn');
+            const saveAppointmentBtnText = document.getElementById('saveAppointmentBtnText');
+            const saveAppointmentLoading = document.getElementById('saveAppointmentLoading');
+            const closeBtns = document.querySelectorAll('.close-btn');
+            const calendarGrid = document.getElementById('calendarGrid');
+            const currentMonthElement = document.getElementById('currentMonth');
+            const prevMonthBtn = document.getElementById('prevMonthBtn');
+            const nextMonthBtn = document.getElementById('nextMonthBtn');
+            const appointmentsTable = document.querySelector('#appointmentsTable tbody');
+            const selectedDateText = document.getElementById('selectedDateText');
+            const viewAllAppointmentsBtn = document.getElementById('viewAllAppointmentsBtn');
+            const doctorFilter = document.getElementById('doctorFilter');
+            const typeFilter = document.getElementById('typeFilter');
+            const statusFilter = document.getElementById('statusFilter');
+            const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+            const scheduleSearch = document.getElementById('scheduleSearch');
+            const searchBtn = document.getElementById('searchBtn');
+
+            let currentDate = new Date();
+            let selectedDate = new Date();
+            let currentMonth = currentDate.getMonth();
+            let currentYear = currentDate.getFullYear();
+
+            // Установка текущей даты
+            function setCurrentDate() {
+                const now = new Date();
+                const formattedDate = now.toLocaleDateString('ru-RU');
+                currentDateElement.textContent = formattedDate;
+            }
+
+            // Загрузка данных пользователя
+            function loadUserData() {
+                const savedName = localStorage.getItem('userName');
+                const savedRole = localStorage.getItem('userRole');
+                
+                if (savedName) {
+                    userName.textContent = savedName;
+                    // Создаем инициалы для аватара
+                    const initials = savedName.split(' ').map(n => n[0]).join('');
+                    userAvatar.textContent = initials;
+                }
+                
+                if (savedRole) {
+                    userRole.textContent = savedRole;
+                }
+            }
+
+            // Генерация календаря
+            function generateCalendar() {
+                // Очистка календаря
+                calendarGrid.innerHTML = '';
+                
+                // Заголовки дней недели
+                const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+                daysOfWeek.forEach(day => {
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'calendar-day-header';
+                    dayHeader.textContent = day;
+                    calendarGrid.appendChild(dayHeader);
+                });
+                
+                // Первый день месяца
+                const firstDay = new Date(currentYear, currentMonth, 1);
+                // Последний день месяца
+                const lastDay = new Date(currentYear, currentMonth + 1, 0);
+                // День недели первого дня месяца (0 - воскресенье, 1 - понедельник, ...)
+                let firstDayOfWeek = firstDay.getDay();
+                if (firstDayOfWeek === 0) firstDayOfWeek = 7; // Воскресенье становится 7
+                
+                // Дней в предыдущем месяце
+                const prevMonthLastDay = new Date(currentYear, currentMonth, 0).getDate();
+                
+                // Заполнение днями предыдущего месяца
+                for (let i = firstDayOfWeek - 1; i > 0; i--) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day other-month';
+                    dayElement.textContent = prevMonthLastDay - i + 1;
+                    calendarGrid.appendChild(dayElement);
+                }
+                
+                // Заполнение днями текущего месяца
+                for (let i = 1; i <= lastDay.getDate(); i++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    
+                    // Проверка, является ли день сегодняшним
+                    const today = new Date();
+                    if (i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+                        dayElement.classList.add('today');
+                    }
+                    
+                    // Проверка, является ли день выбранным
+                    if (i === selectedDate.getDate() && currentMonth === selectedDate.getMonth() && currentYear === selectedDate.getFullYear()) {
+                        dayElement.style.backgroundColor = 'rgba(46, 125, 50, 0.1)';
+                    }
+                    
+                    dayElement.textContent = i;
+                    
+                    // Добавление событий на этот день
+                    const dayEvents = appointments.filter(app => {
+                        const appDate = new Date(app.date);
+                        return appDate.getDate() === i && 
+                               appDate.getMonth() === currentMonth && 
+                               appDate.getFullYear() === currentYear;
+                    });
+                    
+                    if (dayEvents.length > 0) {
+                        dayEvents.forEach(event => {
+                            const eventElement = document.createElement('div');
+                            eventElement.className = 'calendar-event';
+                            eventElement.textContent = `${event.time} - ${getPatientName(event.patientId)}`;
+                            dayElement.appendChild(eventElement);
+                        });
+                    }
+                    
+                    // Обработчик клика по дню
+                    dayElement.addEventListener('click', () => {
+                        selectedDate = new Date(currentYear, currentMonth, i);
+                        selectedDateText.textContent = formatDate(selectedDate);
+                        renderAppointmentsForDate(selectedDate);
+                    });
+                    
+                    calendarGrid.appendChild(dayElement);
+                }
+                
+                // Заполнение днями следующего месяца
+                const totalCells = 42; // 6 строк по 7 дней
+                const daysInMonth = lastDay.getDate();
+                const daysSoFar = firstDayOfWeek - 1 + daysInMonth;
+                const daysNextMonth = totalCells - daysSoFar;
+                
+                for (let i = 1; i <= daysNextMonth; i++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day other-month';
+                    dayElement.textContent = i;
+                    calendarGrid.appendChild(dayElement);
+                }
+                
+                // Обновление отображаемого месяца и года
+                const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+                    "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+                currentMonthElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            }
+
+            // Форматирование даты
+            function formatDate(date) {
+                return date.toLocaleDateString('ru-RU', { 
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric',
+                    weekday: 'long'
+                });
+            }
+
+            // Получение имени пациента по ID
+            function getPatientName(patientId) {
+                const patient = patients.find(p => p.id === patientId);
+                return patient ? patient.name : 'Неизвестный пациент';
+            }
+
+            // Получение имени врача по ID
+            function getDoctorName(doctorId) {
+                const doctor = doctors.find(d => d.id === doctorId);
+                return doctor ? doctor.name : 'Неизвестный врач';
+            }
+
+            // Получение текста статуса
+            function getStatusText(status) {
+                switch(status) {
+                    case 'scheduled': return 'Запланирован';
+                    case 'confirmed': return 'Подтверждён';
+                    case 'completed': return 'Завершён';
+                    case 'cancelled': return 'Отменён';
+                    default: return status;
+                }
+            }
+
+            // Получение класса для статуса
+            function getStatusClass(status) {
+                switch(status) {
+                    case 'scheduled': return 'status-vacation';
+                    case 'confirmed': return 'status-available';
+                    case 'completed': return 'status-busy';
+                    case 'cancelled': return 'status-inactive';
+                    default: return '';
+                }
+            }
+
+            // Рендеринг приёмов для выбранной даты
+            function renderAppointmentsForDate(date) {
+                appointmentsTable.innerHTML = '';
+                
+                const dateString = date.toISOString().split('T')[0];
+                let filteredAppointments = appointments.filter(app => app.date === dateString);
+                
+                // Применение фильтров
+                const doctorValue = doctorFilter.value;
+                if (doctorValue) {
+                    filteredAppointments = filteredAppointments.filter(app => app.doctorId === parseInt(doctorValue));
+                }
+                
+                const typeValue = typeFilter.value;
+                if (typeValue) {
+                    filteredAppointments = filteredAppointments.filter(app => app.type === typeValue);
+                }
+                
+                const statusValue = statusFilter.value;
+                if (statusValue) {
+                    filteredAppointments = filteredAppointments.filter(app => app.status === statusValue);
+                }
+                
+                // Поиск
+                const searchTerm = scheduleSearch.value.toLowerCase();
+                if (searchTerm) {
+                    filteredAppointments = filteredAppointments.filter(app => {
+                        const patientName = getPatientName(app.patientId).toLowerCase();
+                        const doctorName = getDoctorName(app.doctorId).toLowerCase();
+                        return patientName.includes(searchTerm) || doctorName.includes(searchTerm);
+                    });
+                }
+                
+                if (filteredAppointments.length === 0) {
+                    appointmentsTable.innerHTML = '<tr><td colspan="6" class="text-center" style="padding: 20px;">Приёмы не найдены</td></tr>';
+                    return;
+                }
+                
+                filteredAppointments.forEach(appointment => {
+                    const statusText = getStatusText(appointment.status);
+                    const statusClass = getStatusClass(appointment.status);
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${appointment.time}</td>
+                        <td>${getPatientName(appointment.patientId)}</td>
+                        <td>${getDoctorName(appointment.doctorId)}</td>
+                        <td>${appointment.type === 'consultation' ? 'Консультация' : 
+                              appointment.type === 'examination' ? 'Осмотр' : 
+                              appointment.type === 'procedure' ? 'Процедура' : 'Операция'}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline" onclick="viewAppointment(${appointment.id})">Просмотр</button>
+                            <button class="btn btn-sm btn-outline" onclick="editAppointment(${appointment.id})">Изменить</button>
+                            <button class="btn btn-sm btn-error" onclick="cancelAppointment(${appointment.id})">Отменить</button>
+                        </td>
+                    `;
+                    appointmentsTable.appendChild(row);
+                });
+            }
+
+            // Сброс фильтров
+            function resetFilters() {
+                doctorFilter.value = '';
+                typeFilter.value = '';
+                statusFilter.value = '';
+                scheduleSearch.value = '';
+                renderAppointmentsForDate(selectedDate);
+                showNotification('Фильтры сброшены', 'success');
+            }
+
+            // Обработчики событий
+            addAppointmentBtn.addEventListener('click', () => {
+                addAppointmentModal.classList.add('active');
+            });
+
+            cancelAppointmentBtn.addEventListener('click', () => {
+                addAppointmentModal.classList.remove('active');
+                // Очистка формы
+                document.getElementById('appointmentPatient').value = '';
+                document.getElementById('appointmentDoctor').value = '';
+                document.getElementById('appointmentDate').value = '';
+                document.getElementById('appointmentTime').value = '';
+                document.getElementById('appointmentType').value = '';
+                document.getElementById('appointmentNotes').value = '';
+            });
+
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const modal = e.target.closest('.modal');
+                    modal.classList.remove('active');
+                });
+            });
+
+            saveAppointmentBtn.addEventListener('click', () => {
+                // Получение данных из формы
+                const patientId = document.getElementById('appointmentPatient').value;
+                const doctorId = document.getElementById('appointmentDoctor').value;
+                const date = document.getElementById('appointmentDate').value;
+                const time = document.getElementById('appointmentTime').value;
+                const type = document.getElementById('appointmentType').value;
+                const notes = document.getElementById('appointmentNotes').value;
+                
+                // Простая валидация
+                if (!patientId || !doctorId || !date || !time || !type) {
+                    showNotification('Пожалуйста, заполните все обязательные поля', 'error');
+                    return;
+                }
+                
+                // Показать индикатор загрузки
+                saveAppointmentBtnText.classList.add('hidden');
+                saveAppointmentLoading.classList.remove('hidden');
+                saveAppointmentBtn.disabled = true;
+                
+                // Имитация сохранения
+                setTimeout(() => {
+                    // Добавление нового приёма
+                    const newAppointment = {
+                        id: appointments.length > 0 ? Math.max(...appointments.map(a => a.id)) + 1 : 1,
+                        patientId: parseInt(patientId),
+                        doctorId: parseInt(doctorId),
+                        date,
+                        time,
+                        type,
+                        status: "scheduled",
+                        notes
+                    };
+                    
+                    appointments.push(newAppointment);
+                    generateCalendar();
+                    renderAppointmentsForDate(selectedDate);
+                    addAppointmentModal.classList.remove('active');
+                    
+                    // Скрыть индикатор загрузки
+                    saveAppointmentBtnText.classList.remove('hidden');
+                    saveAppointmentLoading.classList.add('hidden');
+                    saveAppointmentBtn.disabled = false;
+                    
+                    // Очистка формы
+                    document.getElementById('appointmentPatient').value = '';
+                    document.getElementById('appointmentDoctor').value = '';
+                    document.getElementById('appointmentDate').value = '';
+                    document.getElementById('appointmentTime').value = '';
+                    document.getElementById('appointmentType').value = '';
+                    document.getElementById('appointmentNotes').value = '';
+                    
+                    showNotification('Приём успешно добавлен!', 'success');
+                }, 1000);
+            });
+
+            // Навигация по месяцам
+            prevMonthBtn.addEventListener('click', () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                generateCalendar();
+            });
+
+            nextMonthBtn.addEventListener('click', () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                generateCalendar();
+            });
+
+            viewAllAppointmentsBtn.addEventListener('click', () => {
+                selectedDate = new Date();
+                selectedDateText.textContent = 'все приёмы';
+                renderAllAppointments();
+            });
+
+            // Применение фильтров
+            doctorFilter.addEventListener('change', () => {
+                renderAppointmentsForDate(selectedDate);
+            });
+
+            typeFilter.addEventListener('change', () => {
+                renderAppointmentsForDate(selectedDate);
+            });
+
+            statusFilter.addEventListener('change', () => {
+                renderAppointmentsForDate(selectedDate);
+            });
+
+            resetFiltersBtn.addEventListener('click', resetFilters);
+
+            searchBtn.addEventListener('click', () => {
+                renderAppointmentsForDate(selectedDate);
+            });
+
+            scheduleSearch.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    renderAppointmentsForDate(selectedDate);
+                }
+            });
+
+            // Выход из системы
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userRole');
+                window.location.href = 'index.html';
+            });
+
+            // Рендеринг всех приёмов
+            function renderAllAppointments() {
+                appointmentsTable.innerHTML = '';
+                
+                let filteredAppointments = [...appointments];
+                
+                // Применение фильтров
+                const doctorValue = doctorFilter.value;
+                if (doctorValue) {
+                    filteredAppointments = filteredAppointments.filter(app => app.doctorId === parseInt(doctorValue));
+                }
+                
+                const typeValue = typeFilter.value;
+                if (typeValue) {
+                    filteredAppointments = filteredAppointments.filter(app => app.type === typeValue);
+                }
+                
+                const statusValue = statusFilter.value;
+                if (statusValue) {
+                    filteredAppointments = filteredAppointments.filter(app => app.status === statusValue);
+                }
+                
+                // Поиск
+                const searchTerm = scheduleSearch.value.toLowerCase();
+                if (searchTerm) {
+                    filteredAppointments = filteredAppointments.filter(app => {
+                        const patientName = getPatientName(app.patientId).toLowerCase();
+                        const doctorName = getDoctorName(app.doctorId).toLowerCase();
+                        return patientName.includes(searchTerm) || doctorName.includes(searchTerm);
+                    });
+                }
+                
+                if (filteredAppointments.length === 0) {
+                    appointmentsTable.innerHTML = '<tr><td colspan="6" class="text-center" style="padding: 20px;">Приёмы не найдены</td></tr>';
+                    return;
+                }
+                
+                filteredAppointments.forEach(appointment => {
+                    const statusText = getStatusText(appointment.status);
+                    const statusClass = getStatusClass(appointment.status);
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${appointment.date} ${appointment.time}</td>
+                        <td>${getPatientName(appointment.patientId)}</td>
+                        <td>${getDoctorName(appointment.doctorId)}</td>
+                        <td>${appointment.type === 'consultation' ? 'Консультация' : 
+                              appointment.type === 'examination' ? 'Осмотр' : 
+                              appointment.type === 'procedure' ? 'Процедура' : 'Операция'}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline" onclick="viewAppointment(${appointment.id})">Просмотр</button>
+                            <button class="btn btn-sm btn-outline" onclick="editAppointment(${appointment.id})">Изменить</button>
+                            <button class="btn btn-sm btn-error" onclick="cancelAppointment(${appointment.id})">Отменить</button>
+                        </td>
+                    `;
+                    appointmentsTable.appendChild(row);
+                });
+            }
+
+            // Глобальные функции для кнопок
+            window.viewAppointment = function(appointmentId) {
+                showNotification(`Просмотр приёма с ID: ${appointmentId}`, 'info');
+            };
+
+            window.editAppointment = function(appointmentId) {
+                showNotification(`Редактирование приёма с ID: ${appointmentId}`, 'info');
+            };
+
+            window.cancelAppointment = function(appointmentId) {
+                const appointment = appointments.find(a => a.id === appointmentId);
+                if (appointment) {
+                    appointment.status = 'cancelled';
+                    generateCalendar();
+                    renderAppointmentsForDate(selectedDate);
+                    showNotification('Приём отменен', 'success');
+                }
+            };
+
+            // Инициализация
+            setCurrentDate();
+            loadUserData();
+            generateCalendar();
+            selectedDateText.textContent = formatDate(selectedDate);
+            renderAppointmentsForDate(selectedDate);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки - Медицинская система</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Боковая панель навигации -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>МедСистема</h2>
+                <p>Поликлиника №1</p>
+            </div>
+            <div class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i>📊</i> <span class="nav-text">Главная</span>
+                </a>
+                <a href="patients.html" class="nav-item">
+                    <i>👥</i> <span class="nav-text">Пациенты</span>
+                </a>
+                <a href="staff.html" class="nav-item">
+                    <i>👨‍⚕️</i> <span class="nav-text">Персонал</span>
+                </a>
+                <a href="schedule.html" class="nav-item">
+                    <i>📅</i> <span class="nav-text">Расписание</span>
+                </a>
+                <a href="reports.html" class="nav-item">
+                    <i>📈</i> <span class="nav-text">Отчёты</span>
+                </a>
+                <a href="settings.html" class="nav-item active">
+                    <i>⚙️</i> <span class="nav-text">Настройки</span>
+                </a>
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">ИИ</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Иван Иванов</div>
+                        <div class="user-role" id="userRole">Администратор</div>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i>🚪</i> <span>Выйти</span>
+                </button>
+                <div class="clinic-name">Поликлиника №1</div>
+                <div id="currentDate">01.01.2023</div>
+            </div>
+        </div>
+
+        <!-- Основное содержимое -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1>Настройки системы</h1>
+                <div>
+                    <button class="btn btn-outline" id="backupBtn">Создать резервную копию</button>
+                </div>
+            </div>
+            <div class="content-body">
+                <div class="page-title">
+                    <h1>Управление системой</h1>
+                </div>
+
+                <!-- Настройки пользователя -->
+                <div class="settings-section">
+                    <h2>Профиль пользователя</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="userFirstName">Имя</label>
+                            <input type="text" class="form-control" id="userFirstName" value="Иван">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="userLastName">Фамилия</label>
+                            <input type="text" class="form-control" id="userLastName" value="Иванов">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="userEmail">Email</label>
+                        <input type="email" class="form-control" id="userEmail" value="ivanov@clinic.ru">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="userPhone">Телефон</label>
+                        <input type="tel" class="form-control" id="userPhone" value="+7 (912) 345-67-89">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="userRoleSetting">Роль</label>
+                        <select class="form-control" id="userRoleSetting">
+                            <option value="admin">Администратор</option>
+                            <option value="doctor">Врач</option>
+                            <option value="nurse">Медсестра</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="saveProfileBtn">Сохранить изменения</button>
+                    </div>
+                </div>
+
+                <!-- Настройки клиники -->
+                <div class="settings-section">
+                    <h2>Настройки клиники</h2>
+                    <div class="form-group">
+                        <label class="form-label" for="clinicName">Название клиники</label>
+                        <input type="text" class="form-control" id="clinicName" value="Поликлиника №1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="clinicAddress">Адрес</label>
+                        <input type="text" class="form-control" id="clinicAddress" value="ул. Центральная, 1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="clinicPhone">Телефон</label>
+                        <input type="tel" class="form-control" id="clinicPhone" value="+7 (495) 123-45-67">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="clinicEmail">Email</label>
+                        <input type="email" class="form-control" id="clinicEmail" value="info@polyclinic1.ru">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="clinicWebsite">Веб-сайт</label>
+                        <input type="text" class="form-control" id="clinicWebsite" value="www.polyclinic1.ru">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="saveClinicBtn">Сохранить настройки</button>
+                    </div>
+                </div>
+
+                <!-- Настройки системы -->
+                <div class="settings-section">
+                    <h2>Настройки системы</h2>
+                    <div class="form-group">
+                        <label class="form-label" for="language">Язык</label>
+                        <select class="form-control" id="language">
+                            <option value="ru">Русский</option>
+                            <option value="en">Английский</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="timezone">Часовой пояс</label>
+                        <select class="form-control" id="timezone">
+                            <option value="+3">Москва (UTC+3)</option>
+                            <option value="+4">Самара (UTC+4)</option>
+                            <option value="+5">Екатеринбург (UTC+5)</option>
+                            <option value="+6">Омск (UTC+6)</option>
+                            <option value="+7">Красноярск (UTC+7)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="dateFormat">Формат даты</label>
+                        <select class="form-control" id="dateFormat">
+                            <option value="dd.mm.yyyy">DD.MM.YYYY</option>
+                            <option value="mm/dd/yyyy">MM/DD/YYYY</option>
+                            <option value="yyyy-mm-dd">YYYY-MM-DD</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox">
+                            <input type="checkbox" id="emailNotifications">
+                            <span class="checkmark"></span>
+                            Email уведомления
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox">
+                            <input type="checkbox" id="smsNotifications" checked>
+                            <span class="checkmark"></span>
+                            SMS уведомления
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="saveSystemBtn">Сохранить настройки</button>
+                    </div>
+                </div>
+
+                <!-- Безопасность -->
+                <div class="settings-section">
+                    <h2>Безопасность</h2>
+                    <div class="form-group">
+                        <label class="form-label" for="currentPassword">Текущий пароль</label>
+                        <input type="password" class="form-control" id="currentPassword" placeholder="Введите текущий пароль">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="newPassword">Новый пароль</label>
+                        <input type="password" class="form-control" id="newPassword" placeholder="Введите новый пароль">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="confirmPassword">Подтверждение пароля</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Повторите новый пароль">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="changePasswordBtn">Изменить пароль</button>
+                    </div>
+                </div>
+
+                <!-- Управление пользователями -->
+                <div class="settings-section">
+                    <h2>Управление пользователями</h2>
+                    <div class="table-container">
+                        <table id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>Имя</th>
+                                    <th>Email</th>
+                                    <th>Роль</th>
+                                    <th>Статус</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Иванов Иван</td>
+                                    <td>ivanov@clinic.ru</td>
+                                    <td>Администратор</td>
+                                    <td><span class="status-badge status-active">Активен</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline">Редактировать</button>
+                                        <button class="btn btn-sm btn-error">Заблокировать</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Петрова Анна</td>
+                                    <td>petrova@clinic.ru</td>
+                                    <td>Врач</td>
+                                    <td><span class="status-badge status-active">Активен</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline">Редактировать</button>
+                                        <button class="btn btn-sm btn-error">Заблокировать</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Сидоров Алексей</td>
+                                    <td>sidorov@clinic.ru</td>
+                                    <td>Медсестра</td>
+                                    <td><span class="status-badge status-inactive">Неактивен</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline">Редактировать</button>
+                                        <button class="btn btn-sm btn-success">Активировать</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-20">
+                        <button class="btn btn-accent" id="addUserBtn">Добавить пользователя</button>
+                    </div>
+                </div>
+
+                <!-- Резервное копирование -->
+                <div class="settings-section">
+                    <h2>Резервное копирование и восстановление</h2>
+                    <div class="form-group">
+                        <label class="form-label">Автоматическое резервное копирование</label>
+                        <div>
+                            <label class="checkbox" style="display: inline-block; margin-right: 20px;">
+                                <input type="radio" name="backupFrequency" value="daily" checked>
+                                <span class="checkmark"></span>
+                                Ежедневно
+                            </label>
+                            <label class="checkbox" style="display: inline-block; margin-right: 20px;">
+                                <input type="radio" name="backupFrequency" value="weekly">
+                                <span class="checkmark"></span>
+                                Еженедельно
+                            </label>
+                            <label class="checkbox" style="display: inline-block;">
+                                <input type="radio" name="backupFrequency" value="monthly">
+                                <span class="checkmark"></span>
+                                Ежемесячно
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Последнее резервное копирование</label>
+                        <p>15.02.2023 03:00</p>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="backupNowBtn">Создать резервную копию сейчас</button>
+                        <button class="btn btn-outline" id="restoreBackupBtn">Восстановить из резервной копии</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления пользователя -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Добавить пользователя</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="newUserName">Имя</label>
+                        <input type="text" class="form-control" id="newUserName" placeholder="Введите имя">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="newUserLastName">Фамилия</label>
+                        <input type="text" class="form-control" id="newUserLastName" placeholder="Введите фамилию">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="newUserEmail">Email</label>
+                    <input type="email" class="form-control" id="newUserEmail" placeholder="Введите email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="newUserRole">Роль</label>
+                    <select class="form-control" id="newUserRole">
+                        <option value="admin">Администратор</option>
+                        <option value="doctor">Врач</option>
+                        <option value="nurse">Медсестра</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="newUserPassword">Пароль</label>
+                    <input type="password" class="form-control" id="newUserPassword" placeholder="Введите пароль">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelAddUserBtn">Отмена</button>
+                <button class="btn btn-primary" id="saveNewUserBtn">Добавить пользователя</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification" class="notification">
+        <span id="notificationText"></span>
+        <button class="close-notification">&times;</button>
+    </div>
+
+    <script>
+        // Функция для показа уведомлений
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            // Автоматическое скрытие через 5 секунд
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Закрытие уведомления по клику на крестик
+        document.querySelector('.close-notification').addEventListener('click', function() {
+            document.getElementById('notification').classList.remove('show');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверка авторизации
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // DOM элементы
+            const logoutBtn = document.getElementById('logoutBtn');
+            const currentDateElement = document.getElementById('currentDate');
+            const userAvatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+            const userRole = document.getElementById('userRole');
+            const saveProfileBtn = document.getElementById('saveProfileBtn');
+            const saveClinicBtn = document.getElementById('saveClinicBtn');
+            const saveSystemBtn = document.getElementById('saveSystemBtn');
+            const changePasswordBtn = document.getElementById('changePasswordBtn');
+            const addUserBtn = document.getElementById('addUserBtn');
+            const addUserModal = document.getElementById('addUserModal');
+            const cancelAddUserBtn = document.getElementById('cancelAddUserBtn');
+            const saveNewUserBtn = document.getElementById('saveNewUserBtn');
+            const closeBtns = document.querySelectorAll('.close-btn');
+            const backupBtn = document.getElementById('backupBtn');
+            const backupNowBtn = document.getElementById('backupNowBtn');
+            const restoreBackupBtn = document.getElementById('restoreBackupBtn');
+
+            // Установка текущей даты
+            function setCurrentDate() {
+                const now = new Date();
+                const formattedDate = now.toLocaleDateString('ru-RU');
+                currentDateElement.textContent = formattedDate;
+            }
+
+            // Загрузка данных пользователя
+            function loadUserData() {
+                const savedName = localStorage.getItem('userName');
+                const savedRole = localStorage.getItem('userRole');
+                
+                if (savedName) {
+                    userName.textContent = savedName;
+                    // Создаем инициалы для аватара
+                    const initials = savedName.split(' ').map(n => n[0]).join('');
+                    userAvatar.textContent = initials;
+                }
+                
+                if (savedRole) {
+                    userRole.textContent = savedRole;
+                }
+            }
+
+            // Обработчики событий
+            saveProfileBtn.addEventListener('click', () => {
+                showNotification('Настройки профиля сохранены', 'success');
+            });
+
+            saveClinicBtn.addEventListener('click', () => {
+                showNotification('Настройки клиники сохранены', 'success');
+            });
+
+            saveSystemBtn.addEventListener('click', () => {
+                showNotification('Системные настройки сохранены', 'success');
+            });
+
+            changePasswordBtn.addEventListener('click', () => {
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (!currentPassword || !newPassword || !confirmPassword) {
+                    showNotification('Пожалуйста, заполните все поля', 'error');
+                    return;
+                }
+                
+                if (newPassword !== confirmPassword) {
+                    showNotification('Пароли не совпадают', 'error');
+                    return;
+                }
+                
+                // Очистка полей
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+                
+                showNotification('Пароль успешно изменен', 'success');
+            });
+
+            addUserBtn.addEventListener('click', () => {
+                addUserModal.classList.add('active');
+            });
+
+            cancelAddUserBtn.addEventListener('click', () => {
+                addUserModal.classList.remove('active');
+                // Очистка формы
+                document.getElementById('newUserName').value = '';
+                document.getElementById('newUserLastName').value = '';
+                document.getElementById('newUserEmail').value = '';
+                document.getElementById('newUserRole').value = 'admin';
+                document.getElementById('newUserPassword').value = '';
+            });
+
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const modal = e.target.closest('.modal');
+                    modal.classList.remove('active');
+                });
+            });
+
+            saveNewUserBtn.addEventListener('click', () => {
+                const name = document.getElementById('newUserName').value;
+                const lastName = document.getElementById('newUserLastName').value;
+                const email = document.getElementById('newUserEmail').value;
+                const role = document.getElementById('newUserRole').value;
+                const password = document.getElementById('newUserPassword').value;
+                
+                if (!name || !lastName || !email || !password) {
+                    showNotification('Пожалуйста, заполните все поля', 'error');
+                    return;
+                }
+                
+                // Очистка формы
+                document.getElementById('newUserName').value = '';
+                document.getElementById('newUserLastName').value = '';
+                document.getElementById('newUserEmail').value = '';
+                document.getElementById('newUserRole').value = 'admin';
+                document.getElementById('newUserPassword').value = '';
+                
+                addUserModal.classList.remove('active');
+                showNotification('Пользователь успешно добавлен', 'success');
+            });
+
+            backupBtn.addEventListener('click', () => {
+                showNotification('Резервная копия создана', 'success');
+            });
+
+            backupNowBtn.addEventListener('click', () => {
+                showNotification('Резервная копия создана', 'success');
+            });
+
+            restoreBackupBtn.addEventListener('click', () => {
+                showNotification('Восстановление из резервной копии запущено', 'success');
+            });
+
+            // Выход из системы
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userRole');
+                window.location.href = 'index.html';
+            });
+
+            // Инициализация
+            setCurrentDate();
+            loadUserData();
+        });
+    </script>
+</body>
+</html>
